@@ -36,6 +36,12 @@ Practical Python and PowerShell learning platform with guided study, validated q
 
 Experimental hypotheses and adversarial cases for GitHub Hidden Gems are kept separate from production through the public [Research Intake](https://github.com/JoanAbad82/github-hidden-gems-research-intake).
 
+## Open to opportunities
+
+Interested in roles or collaborations around **automation, data analysis, security tooling, and practical software engineering**.
+
+[Connect on LinkedIn](https://www.linkedin.com/in/joan-abad-batalla-b27042331/)
+
 ## Links
 
 - **Open Utility Lab:** https://openutilitylab.com/
