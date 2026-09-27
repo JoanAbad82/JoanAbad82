@@ -1,48 +1,40 @@
 # Joan Abad
 
-I build practical software focused on **automation, data analysis, learning, and transparent decision support**.
+I build practical software for **automation, data analysis, security tooling, learning, and explainable decision support**.
 
-My projects tend to turn complex information into something more understandable, testable, and useful. I value reproducibility, explicit limitations, clear evidence trails, and outputs that can be independently reviewed.
+**Python · PowerShell · TypeScript · C# · GitHub Actions · Cloudflare**
 
-## Current focus
+I focus on tools that make complex information easier to inspect, test, and use. My projects tend to favor reproducible workflows, explicit limitations, clear evidence trails, and local or client-side processing when it improves privacy or simplicity.
 
-### [GitHub Hidden Gems](https://github.com/JoanAbad82/github-hidden-gems)
-Low-noise, GitHub-native discovery system for finding valuable but low-visibility open-source repositories across AI/agents, automation, data analysis, and quantitative tools.
+## Selected work
 
-The project emphasizes conservative evidence handling, reproducible scoring, bounded analysis of untrusted repositories, and explicit separation between production behavior and experimental research.
+| Project | What it does | Main stack | Links |
+|---|---|---|---|
+| **GitHub Hidden Gems** | Finds and scores valuable low-visibility open-source repositories using bounded static analysis and reproducible evidence. | Python · GitHub Actions | [Code](https://github.com/JoanAbad82/github-hidden-gems) |
+| **Open Utility Lab** | Public home for practical utilities focused on transparent output and lightweight client-side workflows. | Static web · PowerShell tooling | [Live](https://openutilitylab.com/) · [Code](https://github.com/JoanAbad82/openutilitylab-site) |
+| **Master Security Review** | Windows audit utility for fast first-pass security reviews and safer, structured reports. | C# · Windows | [Code](https://github.com/JoanAbad82/master-security-review) |
+| **Affiliate Friction Auditor** | Audits affiliate CTA friction, monetization gaps, and commercial hub opportunities. | Python · Web analysis | [Live](https://openutilitylab.com/affiliate-friction-auditor/) · [Code](https://github.com/JoanAbad82/affiliate-friction-auditor) |
+| **MTGSynergy** | Explainable Magic: The Gathering deck and card-synergy analysis using Oracle text and deterministic rules. | TypeScript · Astro · Preact | [Live](https://mtgsynergy.com/) · [Code](https://github.com/JoanAbad82/mtgsynergy) |
+| **Repàs Actiu** | Bilingual Catalan/Spanish study platform with validated quizzes, exam modes, flashcards, and local progress tracking. | JavaScript · Cloudflare Pages | [Live](https://repasactiu.pages.dev/) · [Code](https://github.com/JoanAbad82/repasactiu) |
 
-Research hypotheses and adversarial cases are handled separately through the [Research Intake](https://github.com/JoanAbad82/github-hidden-gems-research-intake).
-
-## Selected projects
-
-### [Open Utility Lab](https://github.com/JoanAbad82/openutilitylab-site)
-Collection of practical software utilities with an emphasis on transparent output and local or client-side processing where possible.
-
-### [Master Security Review](https://github.com/JoanAbad82/master-security-review)
-Open-source Windows audit utility for fast first-pass security reviews and safer, more structured reports.
-
-### [Affiliate Friction Auditor](https://github.com/JoanAbad82/affiliate-friction-auditor)
-Audit toolkit for identifying affiliate CTA friction, monetization gaps, and commercial hub opportunities.
-
-### [MTGSynergy](https://github.com/JoanAbad82/mtgsynergy)
-Explainable Magic: The Gathering card interaction analysis using Oracle text, semantic interpretation, and deterministic rules modeling.
-
-### [Repàs Actiu](https://github.com/JoanAbad82/repasactiu)
-Independent Catalan/Spanish study platform with validated quizzes, exam modes, flashcards, and local progress tracking.
-
-## Also building
+## Currently building
 
 ### [Programación Práctica](https://github.com/JoanAbad82/programacion-practica)
+
 Practical Python and PowerShell learning platform with guided study, validated quizzes, flashcards, and concept-level progress.
 
-## Engineering principles
+[Live site](https://programacion-practica.pages.dev/) · [Source code](https://github.com/JoanAbad82/programacion-practica)
 
-- Automation that removes repetitive work
-- Reproducible and inspectable workflows
-- Clear separation between evidence, assumptions, and conclusions
-- Conservative handling of untrusted inputs
-- Explicit limitations instead of black-box confidence
-- Local or client-side processing when it materially improves privacy or simplicity
+## How I work
+
+- Build automation that removes repetitive work.
+- Keep evidence, assumptions, and conclusions clearly separated.
+- Prefer reproducible and inspectable workflows over opaque outputs.
+- Treat untrusted inputs conservatively and document important limitations.
+
+## Research
+
+Experimental hypotheses and adversarial cases for GitHub Hidden Gems are kept separate from production through the public [Research Intake](https://github.com/JoanAbad82/github-hidden-gems-research-intake).
 
 ## Links
 
