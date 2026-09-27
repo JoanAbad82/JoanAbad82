@@ -39,3 +39,4 @@ Experimental hypotheses and adversarial cases for GitHub Hidden Gems are kept se
 ## Links
 
 - **Open Utility Lab:** https://openutilitylab.com/
+- **LinkedIn:** https://www.linkedin.com/in/joan-abad-batalla-b27042331/
