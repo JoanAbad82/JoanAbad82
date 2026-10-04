@@ -33,12 +33,15 @@
       "license": "Apache-2.0",
       "canonical_entry": [
         "README.md",
+        "AGENTS.md",
+        "docs/CANONICAL_SOURCES.md",
         "docs/superpowers/contracts/v1-module-interfaces.md"
       ],
       "verification": [
         "tests",
         "schemas",
-        "GitHub Actions"
+        "GitHub Actions",
+        "CITATION.cff"
       ],
       "research_surface": "JoanAbad82/github-hidden-gems-research-intake"
     },
@@ -47,10 +50,18 @@
       "role": "public-utility-site",
       "status": "active-live",
       "language": "PowerShell",
-      "license": null,
+      "license": "Apache-2.0",
       "live_url": "https://openutilitylab.com/",
       "canonical_entry": [
-        "README.md"
+        "README.md",
+        "AGENTS.md",
+        "PROJECT_CONTEXT.json",
+        "sitemap.xml"
+      ],
+      "verification": [
+        "GitHub Actions",
+        "PROJECT_CONTEXT.json",
+        "sitemap.xml"
       ]
     },
     {
@@ -61,6 +72,8 @@
       "license": "MPL-2.0",
       "canonical_entry": [
         "README.md",
+        "AGENTS.md",
+        "docs/ARCHITECTURE.md",
         "docs/COMPILE.md"
       ],
       "verification": [
@@ -91,30 +104,38 @@
       "role": "bilingual-study-platform",
       "status": "active-live",
       "language": "JavaScript",
-      "license": null,
+      "license": "mixed-scope",
       "live_url": "https://repasactiu.pages.dev/",
       "canonical_entry": [
-        "README.md"
+        "README.md",
+        "AGENTS.md",
+        "LICENSE"
       ],
       "verification": [
         "tests",
         "source-traceability manifests",
         "GitHub Actions"
       ],
-      "research_surface": "JoanAbad82/repasactiu-research-intake"
+      "research_surface": "JoanAbad82/repasactiu-research-intake",
+      "license_scope": {
+        "software": "Apache-2.0",
+        "educational_content": "separate rights boundary; see repository LICENSE"
+      }
     },
     {
       "repository": "JoanAbad82/programacion-practica",
       "role": "programming-learning-platform",
       "status": "active-released",
       "language": "TypeScript",
-      "license": null,
+      "license": "Apache-2.0",
       "live_url": "https://programacion-practica.pages.dev/",
       "canonical_entry": [
         "README.md",
         "AGENTS.md"
       ],
       "verification": [
+        "GitHub Actions",
+        "production dependency audit",
         "JSON Schemas",
         "release manifests",
         "QA inventories"
