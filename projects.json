@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "owner": {
+    "name": "Joan Abad",
+    "github": "JoanAbad82",
+    "profile": "https://github.com/JoanAbad82",
+    "website": "https://openutilitylab.com/",
+    "linkedin": "https://www.linkedin.com/in/joan-abad-batalla-b27042331/"
+  },
+  "focus": [
+    "automation",
+    "evidence-driven analysis",
+    "security tooling",
+    "explainable software",
+    "semantic systems",
+    "learning software"
+  ],
+  "principles": [
+    "reproducibility",
+    "determinism where practical",
+    "explicit uncertainty",
+    "machine-readable evidence",
+    "inspectable workflows",
+    "conservative trust boundaries",
+    "local-first where appropriate"
+  ],
+  "projects": [
+    {
+      "repository": "JoanAbad82/github-hidden-gems",
+      "role": "repository-discovery",
+      "status": "active",
+      "language": "Python",
+      "license": "Apache-2.0",
+      "canonical_entry": [
+        "README.md",
+        "docs/superpowers/contracts/v1-module-interfaces.md"
+      ],
+      "verification": [
+        "tests",
+        "schemas",
+        "GitHub Actions"
+      ],
+      "research_surface": "JoanAbad82/github-hidden-gems-research-intake"
+    },
+    {
+      "repository": "JoanAbad82/openutilitylab-site",
+      "role": "public-utility-site",
+      "status": "active-live",
+      "language": "PowerShell",
+      "license": null,
+      "live_url": "https://openutilitylab.com/",
+      "canonical_entry": [
+        "README.md"
+      ]
+    },
+    {
+      "repository": "JoanAbad82/master-security-review",
+      "role": "windows-security-audit",
+      "status": "released",
+      "language": "C#",
+      "license": "MPL-2.0",
+      "canonical_entry": [
+        "README.md",
+        "docs/COMPILE.md"
+      ],
+      "verification": [
+        "GitHub release",
+        "SHA-256",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "repository": "JoanAbad82/mtgsynergy",
+      "role": "explainable-mtg-analysis",
+      "status": "active-released",
+      "language": "TypeScript",
+      "license": "Apache-2.0",
+      "live_url": "https://mtgsynergy.com/",
+      "canonical_entry": [
+        "README.md"
+      ],
+      "verification": [
+        "tests",
+        "schemas",
+        "manifests",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "repository": "JoanAbad82/repasactiu",
+      "role": "bilingual-study-platform",
+      "status": "active-live",
+      "language": "JavaScript",
+      "license": null,
+      "live_url": "https://repasactiu.pages.dev/",
+      "canonical_entry": [
+        "README.md"
+      ],
+      "verification": [
+        "tests",
+        "source-traceability manifests",
+        "GitHub Actions"
+      ],
+      "research_surface": "JoanAbad82/repasactiu-research-intake"
+    },
+    {
+      "repository": "JoanAbad82/programacion-practica",
+      "role": "programming-learning-platform",
+      "status": "active-released",
+      "language": "TypeScript",
+      "license": null,
+      "live_url": "https://programacion-practica.pages.dev/",
+      "canonical_entry": [
+        "README.md",
+        "AGENTS.md"
+      ],
+      "verification": [
+        "JSON Schemas",
+        "release manifests",
+        "QA inventories"
+      ]
+    },
+    {
+      "repository": "JoanAbad82/affiliate-friction-auditor",
+      "role": "affiliate-friction-audit-toolkit",
+      "status": "early-public-toolkit",
+      "language": "Python",
+      "license": "Apache-2.0",
+      "live_url": "https://openutilitylab.com/affiliate-friction-auditor/",
+      "canonical_entry": [
+        "README.md"
+      ],
+      "verification": [
+        "tests",
+        "sanitized examples",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "repository": "JoanAbad82/github-hidden-gems-research-intake",
+      "role": "research-intake",
+      "status": "research-only",
+      "license": null,
+      "canonical_entry": [
+        "README.md",
+        "RESEARCH_BOUNDARIES.md"
+      ],
+      "production_path": "none-automatic"
+    },
+    {
+      "repository": "JoanAbad82/repasactiu-research-intake",
+      "role": "research-intake",
+      "status": "research-only",
+      "license": null,
+      "canonical_entry": [
+        "README.md",
+        "POSITIONING.md"
+      ],
+      "production_path": "none-automatic"
+    }
+  ]
+}
