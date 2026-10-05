@@ -47,6 +47,7 @@ For agents, indexers, and retrieval systems:
 - `PROJECTS.md` — canonical human-readable project map.
 - `AI_CONTEXT.md` — profile-level context, trust boundaries, and interpretation guidance.
 - `AGENT_INTERACTION.md` — canonical interaction protocol for autonomous agents and external research contributors.
+- `OPEN_RESEARCH_CHALLENGES.md` — live entry points to currently open GitHub research issues.
 
 Repository-local documentation remains authoritative for implementation details.
 

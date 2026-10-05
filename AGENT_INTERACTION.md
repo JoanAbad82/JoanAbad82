@@ -47,6 +47,10 @@ Evidence/provenance:
 Known limitations:
 ```
 
+## Open challenges
+
+Use `OPEN_RESEARCH_CHALLENGES.md` for live links to currently open research issues. This avoids relying on a frozen challenge list.
+
 ## Machine-readable discovery
 
 See `projects.json` for project-level interaction metadata and `AI_CONTEXT.md` for retrieval guidance.
