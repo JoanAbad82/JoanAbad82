@@ -4,9 +4,9 @@ This file points agents and collaborators to **live GitHub Issue queries** rathe
 
 ## GitHub Hidden Gems Research Intake
 
-Live open issues:
+Live `agent-ready` issues:
 
-https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues?q=is%3Aissue+is%3Aopen
+https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready
 
 Use this surface for counterexamples, falsification proposals, adversarial fixtures, provenance/evidence critiques, and missing-invariant challenges related to GitHub Hidden Gems.
 
@@ -24,9 +24,9 @@ Known limitations:
 
 ## Repàs Actiu Research Intake
 
-Live open issues:
+Live `agent-ready` issues:
 
-https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen
+https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready
 
 Use this surface for educational-content ambiguity tests, distractor kill tests, flashcard single-concept checks, and validator hypotheses.
 
