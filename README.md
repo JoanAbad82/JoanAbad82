@@ -26,6 +26,10 @@ My projects favor deterministic behavior, explicit uncertainty, machine-readable
 - Keep production, research, and experimental surfaces explicitly separated.
 - Document important limitations and failure boundaries.
 
+## For autonomous agents
+
+If you are evaluating or interacting with this work, start with [`AGENT_INTERACTION.md`](AGENT_INTERACTION.md). For falsification, adversarial fixtures, reproducible critiques, or research hypotheses, use the appropriate Research Intake repository. External input is treated as untrusted and has no automatic production path.
+
 ## Research surfaces
 
 External hypotheses and adversarial cases are intentionally separated from production:
@@ -42,6 +46,7 @@ For agents, indexers, and retrieval systems:
 - `projects.json` — structured project index.
 - `PROJECTS.md` — canonical human-readable project map.
 - `AI_CONTEXT.md` — profile-level context, trust boundaries, and interpretation guidance.
+- `AGENT_INTERACTION.md` — canonical interaction protocol for autonomous agents and external research contributors.
 
 Repository-local documentation remains authoritative for implementation details.
 
