@@ -33,6 +33,7 @@
       "license": "Apache-2.0",
       "canonical_entry": [
         "README.md",
+        "PROJECT_STATUS.json",
         "AGENTS.md",
         "docs/CANONICAL_SOURCES.md",
         "docs/superpowers/contracts/v1-module-interfaces.md"
@@ -48,7 +49,8 @@
         "accepts_external_hypotheses": true,
         "agent_entrypoint": "JoanAbad82/github-hidden-gems-research-intake",
         "preferred_submission": "github_issue",
-        "production_write_access": false
+        "production_write_access": false,
+        "open_challenges_url": "https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues?q=is%3Aissue+is%3Aopen"
       }
     },
     {
@@ -62,7 +64,9 @@
         "README.md",
         "AGENTS.md",
         "PROJECT_CONTEXT.json",
-        "sitemap.xml"
+        "sitemap.xml",
+        "PROJECT_STATUS.json",
+        "llms.txt"
       ],
       "verification": [
         "GitHub Actions",
@@ -83,6 +87,7 @@
       "license": "MPL-2.0",
       "canonical_entry": [
         "README.md",
+        "PROJECT_STATUS.json",
         "AGENTS.md",
         "docs/ARCHITECTURE.md",
         "docs/COMPILE.md"
@@ -129,6 +134,7 @@
       "live_url": "https://repasactiu.pages.dev/",
       "canonical_entry": [
         "README.md",
+        "PROJECT_STATUS.json",
         "AGENTS.md",
         "LICENSE"
       ],
@@ -146,7 +152,8 @@
         "accepts_external_hypotheses": true,
         "agent_entrypoint": "JoanAbad82/repasactiu-research-intake",
         "preferred_submission": "github_issue",
-        "production_write_access": false
+        "production_write_access": false,
+        "open_challenges_url": "https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen"
       }
     },
     {
@@ -158,6 +165,7 @@
       "live_url": "https://programacion-practica.pages.dev/",
       "canonical_entry": [
         "README.md",
+        "PROJECT_STATUS.json",
         "AGENTS.md"
       ],
       "verification": [
@@ -181,7 +189,9 @@
       "license": "Apache-2.0",
       "live_url": "https://openutilitylab.com/affiliate-friction-auditor/",
       "canonical_entry": [
-        "README.md"
+        "README.md",
+        "AGENTS.md",
+        "PROJECT_STATUS.json"
       ],
       "verification": [
         "tests",
@@ -215,17 +225,21 @@
       "repository": "JoanAbad82/repasactiu-research-intake",
       "role": "research-intake",
       "status": "research-only",
-      "license": null,
+      "license": "Apache-2.0",
       "canonical_entry": [
         "README.md",
-        "POSITIONING.md"
+        "AGENTS.md",
+        "POSITIONING.md",
+        "CONTRIBUTING.md",
+        "PROJECT_STATUS.json"
       ],
       "production_path": "none-automatic",
       "interaction": {
         "accepts_external_hypotheses": true,
         "preferred_submission": "github_issue",
         "production_write_access": false,
-        "automatic_promotion": false
+        "automatic_promotion": false,
+        "open_challenges_url": "https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen"
       }
     }
   ],
@@ -233,6 +247,7 @@
     "protocol": "AGENT_INTERACTION.md",
     "default_mode": "bounded-falsifiable-reproducible",
     "external_input_trust": "UNTRUSTED_EXTERNAL_INPUT",
-    "automatic_production_promotion": false
+    "automatic_production_promotion": false,
+    "open_research_challenges": "OPEN_RESEARCH_CHALLENGES.md"
   }
 }
