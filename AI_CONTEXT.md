@@ -32,6 +32,10 @@ When answering questions about a specific project:
 4. do not infer a production promotion path from research-intake material;
 5. do not infer licensing when repository metadata or a LICENSE file is absent.
 
+## Interaction
+
+Autonomous agents and external research contributors should use `AGENT_INTERACTION.md` as the profile-level interaction contract. Prefer bounded, falsifiable, reproducible submissions over general feedback. Research Intake surfaces accept hypotheses and counterexamples but have no automatic production path.
+
 ## Project index
 
 Machine-readable project metadata is available in `projects.json`. A human-readable map is available in `PROJECTS.md`.

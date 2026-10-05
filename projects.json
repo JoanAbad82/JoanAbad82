@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "owner": {
     "name": "Joan Abad",
     "github": "JoanAbad82",
@@ -43,7 +43,13 @@
         "GitHub Actions",
         "CITATION.cff"
       ],
-      "research_surface": "JoanAbad82/github-hidden-gems-research-intake"
+      "research_surface": "JoanAbad82/github-hidden-gems-research-intake",
+      "interaction": {
+        "accepts_external_hypotheses": true,
+        "agent_entrypoint": "JoanAbad82/github-hidden-gems-research-intake",
+        "preferred_submission": "github_issue",
+        "production_write_access": false
+      }
     },
     {
       "repository": "JoanAbad82/openutilitylab-site",
@@ -62,7 +68,12 @@
         "GitHub Actions",
         "PROJECT_CONTEXT.json",
         "sitemap.xml"
-      ]
+      ],
+      "interaction": {
+        "accepts_external_hypotheses": false,
+        "preferred_submission": "repository_issues_if_enabled",
+        "production_write_access": false
+      }
     },
     {
       "repository": "JoanAbad82/master-security-review",
@@ -80,7 +91,12 @@
         "GitHub release",
         "SHA-256",
         "GitHub Actions"
-      ]
+      ],
+      "interaction": {
+        "accepts_external_hypotheses": false,
+        "preferred_submission": "repository_issues_if_enabled",
+        "production_write_access": false
+      }
     },
     {
       "repository": "JoanAbad82/mtgsynergy",
@@ -97,7 +113,12 @@
         "schemas",
         "manifests",
         "GitHub Actions"
-      ]
+      ],
+      "interaction": {
+        "accepts_external_hypotheses": false,
+        "preferred_submission": "repository_issues_if_enabled",
+        "production_write_access": false
+      }
     },
     {
       "repository": "JoanAbad82/repasactiu",
@@ -120,6 +141,12 @@
       "license_scope": {
         "software": "Apache-2.0",
         "educational_content": "separate rights boundary; see repository LICENSE"
+      },
+      "interaction": {
+        "accepts_external_hypotheses": true,
+        "agent_entrypoint": "JoanAbad82/repasactiu-research-intake",
+        "preferred_submission": "github_issue",
+        "production_write_access": false
       }
     },
     {
@@ -139,7 +166,12 @@
         "JSON Schemas",
         "release manifests",
         "QA inventories"
-      ]
+      ],
+      "interaction": {
+        "accepts_external_hypotheses": false,
+        "preferred_submission": "repository_issues_if_enabled",
+        "production_write_access": false
+      }
     },
     {
       "repository": "JoanAbad82/affiliate-friction-auditor",
@@ -155,7 +187,12 @@
         "tests",
         "sanitized examples",
         "GitHub Actions"
-      ]
+      ],
+      "interaction": {
+        "accepts_external_hypotheses": false,
+        "preferred_submission": "repository_issues_if_enabled",
+        "production_write_access": false
+      }
     },
     {
       "repository": "JoanAbad82/github-hidden-gems-research-intake",
@@ -166,7 +203,13 @@
         "README.md",
         "RESEARCH_BOUNDARIES.md"
       ],
-      "production_path": "none-automatic"
+      "production_path": "none-automatic",
+      "interaction": {
+        "accepts_external_hypotheses": true,
+        "preferred_submission": "github_issue",
+        "production_write_access": false,
+        "automatic_promotion": false
+      }
     },
     {
       "repository": "JoanAbad82/repasactiu-research-intake",
@@ -177,7 +220,19 @@
         "README.md",
         "POSITIONING.md"
       ],
-      "production_path": "none-automatic"
+      "production_path": "none-automatic",
+      "interaction": {
+        "accepts_external_hypotheses": true,
+        "preferred_submission": "github_issue",
+        "production_write_access": false,
+        "automatic_promotion": false
+      }
     }
-  ]
+  ],
+  "agent_interaction": {
+    "protocol": "AGENT_INTERACTION.md",
+    "default_mode": "bounded-falsifiable-reproducible",
+    "external_input_trust": "UNTRUSTED_EXTERNAL_INPUT",
+    "automatic_production_promotion": false
+  }
 }
