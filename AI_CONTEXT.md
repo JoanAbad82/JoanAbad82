@@ -27,10 +27,11 @@ Prefer evidence that can be inspected or rerun. Distinguish:
 When answering questions about a specific project:
 
 1. use that repository's README as the first orientation layer;
-2. prefer `AGENTS.md`, canonical-source documents, schemas, manifests, tests, and current release metadata where available;
-3. treat folders explicitly described as historical/archive/research as non-authoritative for current production behavior;
-4. do not infer a production promotion path from research-intake material;
-5. do not infer licensing when repository metadata or a LICENSE file is absent.
+2. prefer `.github/copilot-instructions.md`, `AGENTS.md`, `PROJECT_STATUS.json`, canonical-source documents, schemas, manifests, tests, and current release metadata where available;
+3. use `AGENT_TASKS.json` or `https://openutilitylab.com/agents.json` when the goal is to discover bounded agent-ready work;
+4. treat folders explicitly described as historical/archive/research as non-authoritative for current production behavior;
+5. do not infer a production promotion path from research-intake material;
+6. do not infer licensing when repository metadata or a LICENSE file is absent.
 
 ## Interaction
 

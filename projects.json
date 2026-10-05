@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "owner": {
     "name": "Joan Abad",
     "github": "JoanAbad82",
@@ -50,7 +50,19 @@
         "agent_entrypoint": "JoanAbad82/github-hidden-gems-research-intake",
         "preferred_submission": "github_issue",
         "production_write_access": false,
-        "open_challenges_url": "https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues?q=is%3Aissue+is%3Aopen"
+        "open_challenges_url": "https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready"
+      },
+      "native_agent_surface": {
+        "copilot_instructions": ".github/copilot-instructions.md",
+        "path_instructions": [
+          ".github/instructions/tests.instructions.md",
+          ".github/instructions/research-validation.instructions.md"
+        ],
+        "agent_tasks": "AGENT_TASKS.json",
+        "custom_agents": [
+          ".github/agents/hidden-gems-falsifier.md",
+          ".github/agents/evidence-boundary-reviewer.md"
+        ]
       }
     },
     {
@@ -77,6 +89,11 @@
         "accepts_external_hypotheses": false,
         "preferred_submission": "repository_issues_if_enabled",
         "production_write_access": false
+      },
+      "native_agent_surface": {
+        "copilot_instructions": ".github/copilot-instructions.md",
+        "global_agent_index": "agents.json",
+        "llm_discovery": "llms.txt"
       }
     },
     {
@@ -101,6 +118,13 @@
         "accepts_external_hypotheses": false,
         "preferred_submission": "repository_issues_if_enabled",
         "production_write_access": false
+      },
+      "native_agent_surface": {
+        "copilot_instructions": ".github/copilot-instructions.md",
+        "path_instructions": [
+          ".github/instructions/launcher-audit.instructions.md",
+          ".github/instructions/docs-release.instructions.md"
+        ]
       }
     },
     {
@@ -123,6 +147,9 @@
         "accepts_external_hypotheses": false,
         "preferred_submission": "repository_issues_if_enabled",
         "production_write_access": false
+      },
+      "native_agent_surface": {
+        "native_files_pending_due_open_pr": true
       }
     },
     {
@@ -153,7 +180,14 @@
         "agent_entrypoint": "JoanAbad82/repasactiu-research-intake",
         "preferred_submission": "github_issue",
         "production_write_access": false,
-        "open_challenges_url": "https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen"
+        "open_challenges_url": "https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready"
+      },
+      "native_agent_surface": {
+        "copilot_instructions": ".github/copilot-instructions.md",
+        "path_instructions": [
+          ".github/instructions/content-traceability.instructions.md",
+          ".github/instructions/app-validation.instructions.md"
+        ]
       }
     },
     {
@@ -179,6 +213,13 @@
         "accepts_external_hypotheses": false,
         "preferred_submission": "repository_issues_if_enabled",
         "production_write_access": false
+      },
+      "native_agent_surface": {
+        "copilot_instructions": ".github/copilot-instructions.md",
+        "path_instructions": [
+          ".github/instructions/content.instructions.md",
+          ".github/instructions/app-runtime.instructions.md"
+        ]
       }
     },
     {
@@ -202,6 +243,13 @@
         "accepts_external_hypotheses": false,
         "preferred_submission": "repository_issues_if_enabled",
         "production_write_access": false
+      },
+      "native_agent_surface": {
+        "copilot_instructions": ".github/copilot-instructions.md",
+        "path_instructions": [
+          ".github/instructions/implementation.instructions.md",
+          ".github/instructions/tests-examples.instructions.md"
+        ]
       }
     },
     {
@@ -218,7 +266,12 @@
         "accepts_external_hypotheses": true,
         "preferred_submission": "github_issue",
         "production_write_access": false,
-        "automatic_promotion": false
+        "automatic_promotion": false,
+        "open_challenges_url": "https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready"
+      },
+      "native_agent_surface": {
+        "agent_ready_labels": true,
+        "native_files_pending_due_open_pr": true
       }
     },
     {
@@ -231,7 +284,8 @@
         "AGENTS.md",
         "POSITIONING.md",
         "CONTRIBUTING.md",
-        "PROJECT_STATUS.json"
+        "PROJECT_STATUS.json",
+        "AGENT_TASKS.json"
       ],
       "production_path": "none-automatic",
       "interaction": {
@@ -239,7 +293,11 @@
         "preferred_submission": "github_issue",
         "production_write_access": false,
         "automatic_promotion": false,
-        "open_challenges_url": "https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen"
+        "open_challenges_url": "https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready"
+      },
+      "native_agent_surface": {
+        "copilot_instructions": ".github/copilot-instructions.md",
+        "agent_tasks": "AGENT_TASKS.json"
       }
     }
   ],
@@ -248,6 +306,8 @@
     "default_mode": "bounded-falsifiable-reproducible",
     "external_input_trust": "UNTRUSTED_EXTERNAL_INPUT",
     "automatic_production_promotion": false,
-    "open_research_challenges": "OPEN_RESEARCH_CHALLENGES.md"
+    "open_research_challenges": "OPEN_RESEARCH_CHALLENGES.md",
+    "agent_index_url": "https://openutilitylab.com/agents.json",
+    "llms_url": "https://openutilitylab.com/llms.txt"
   }
 }

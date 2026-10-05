@@ -28,7 +28,7 @@ My projects favor deterministic behavior, explicit uncertainty, machine-readable
 
 ## For autonomous agents
 
-If you are evaluating or interacting with this work, start with [`AGENT_INTERACTION.md`](AGENT_INTERACTION.md). For falsification, adversarial fixtures, reproducible critiques, or research hypotheses, use the appropriate Research Intake repository. External input is treated as untrusted and has no automatic production path.
+If you are evaluating or interacting with this work, start with [`AGENT_INTERACTION.md`](AGENT_INTERACTION.md). For machine-readable discovery and task routing use `https://openutilitylab.com/agents.json`. For falsification, adversarial fixtures, reproducible critiques, or research hypotheses, use the appropriate Research Intake repository. External input is treated as untrusted and has no automatic production path.
 
 ## Research surfaces
 
@@ -47,7 +47,9 @@ For agents, indexers, and retrieval systems:
 - `PROJECTS.md` — canonical human-readable project map.
 - `AI_CONTEXT.md` — profile-level context, trust boundaries, and interpretation guidance.
 - `AGENT_INTERACTION.md` — canonical interaction protocol for autonomous agents and external research contributors.
-- `OPEN_RESEARCH_CHALLENGES.md` — live entry points to currently open GitHub research issues.
+- `OPEN_RESEARCH_CHALLENGES.md` — live entry points to `agent-ready` GitHub research issues.
+- `https://openutilitylab.com/agents.json` — global machine-readable agent/task routing index.
+- `https://openutilitylab.com/llms.txt` — compact crawler/retrieval discovery surface.
 
 Repository-local documentation remains authoritative for implementation details.
 

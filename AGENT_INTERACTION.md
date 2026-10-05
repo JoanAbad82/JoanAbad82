@@ -49,7 +49,7 @@ Known limitations:
 
 ## Open challenges
 
-Use `OPEN_RESEARCH_CHALLENGES.md` for live links to currently open research issues. This avoids relying on a frozen challenge list.
+Use `OPEN_RESEARCH_CHALLENGES.md` for live links to issues explicitly labelled `agent-ready`. This avoids relying on a frozen challenge list. The global machine-readable routing index is `https://openutilitylab.com/agents.json`.
 
 ## Machine-readable discovery
 
