@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.2",
+  "schema_version": "1.3",
   "owner": {
     "name": "Joan Abad",
     "github": "JoanAbad82",
@@ -50,7 +50,8 @@
         "agent_entrypoint": "JoanAbad82/github-hidden-gems-research-intake",
         "preferred_submission": "github_issue",
         "production_write_access": false,
-        "open_challenges_url": "https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready"
+        "open_challenges_url": "https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready",
+        "task_contract_ref": "https://raw.githubusercontent.com/JoanAbad82/github-hidden-gems/main/AGENT_TASKS.json"
       },
       "native_agent_surface": {
         "copilot_instructions": ".github/copilot-instructions.md",
@@ -63,7 +64,13 @@
           ".github/agents/hidden-gems-falsifier.md",
           ".github/agents/evidence-boundary-reviewer.md"
         ]
-      }
+      },
+      "capabilities": [
+        "repository-discovery",
+        "static-analysis",
+        "falsification",
+        "evidence-boundary-review"
+      ]
     },
     {
       "repository": "JoanAbad82/openutilitylab-site",
@@ -94,7 +101,11 @@
         "copilot_instructions": ".github/copilot-instructions.md",
         "global_agent_index": "agents.json",
         "llm_discovery": "llms.txt"
-      }
+      },
+      "capabilities": [
+        "public-agent-routing",
+        "static-web"
+      ]
     },
     {
       "repository": "JoanAbad82/master-security-review",
@@ -125,7 +136,11 @@
           ".github/instructions/launcher-audit.instructions.md",
           ".github/instructions/docs-release.instructions.md"
         ]
-      }
+      },
+      "capabilities": [
+        "windows-security-audit",
+        "report-validation"
+      ]
     },
     {
       "repository": "JoanAbad82/mtgsynergy",
@@ -150,7 +165,11 @@
       },
       "native_agent_surface": {
         "native_files_pending_due_open_pr": true
-      }
+      },
+      "capabilities": [
+        "semantic-analysis",
+        "rules-based-explanation"
+      ]
     },
     {
       "repository": "JoanAbad82/repasactiu",
@@ -180,7 +199,8 @@
         "agent_entrypoint": "JoanAbad82/repasactiu-research-intake",
         "preferred_submission": "github_issue",
         "production_write_access": false,
-        "open_challenges_url": "https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready"
+        "open_challenges_url": "https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready",
+        "task_contract_ref": "https://raw.githubusercontent.com/JoanAbad82/repasactiu-research-intake/main/AGENT_TASKS.json"
       },
       "native_agent_surface": {
         "copilot_instructions": ".github/copilot-instructions.md",
@@ -188,7 +208,12 @@
           ".github/instructions/content-traceability.instructions.md",
           ".github/instructions/app-validation.instructions.md"
         ]
-      }
+      },
+      "capabilities": [
+        "content-validation",
+        "source-traceability",
+        "learning-software"
+      ]
     },
     {
       "repository": "JoanAbad82/programacion-practica",
@@ -220,7 +245,12 @@
           ".github/instructions/content.instructions.md",
           ".github/instructions/app-runtime.instructions.md"
         ]
-      }
+      },
+      "capabilities": [
+        "learning-software",
+        "quiz-validation",
+        "reproducible-sessions"
+      ]
     },
     {
       "repository": "JoanAbad82/affiliate-friction-auditor",
@@ -250,7 +280,11 @@
           ".github/instructions/implementation.instructions.md",
           ".github/instructions/tests-examples.instructions.md"
         ]
-      }
+      },
+      "capabilities": [
+        "static-analysis",
+        "affiliate-friction-audit"
+      ]
     },
     {
       "repository": "JoanAbad82/github-hidden-gems-research-intake",
@@ -259,7 +293,10 @@
       "license": null,
       "canonical_entry": [
         "README.md",
-        "RESEARCH_BOUNDARIES.md"
+        "RESEARCH_BOUNDARIES.md",
+        "CONTRIBUTING.md",
+        "PROJECT_STATUS.json",
+        "AGENT_TASKS.json"
       ],
       "production_path": "none-automatic",
       "interaction": {
@@ -267,12 +304,21 @@
         "preferred_submission": "github_issue",
         "production_write_access": false,
         "automatic_promotion": false,
-        "open_challenges_url": "https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready"
+        "open_challenges_url": "https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready",
+        "task_contract_ref": "https://raw.githubusercontent.com/JoanAbad82/github-hidden-gems-research-intake/main/AGENT_TASKS.json"
       },
       "native_agent_surface": {
-        "agent_ready_labels": true,
-        "native_files_pending_due_open_pr": true
-      }
+        "copilot_instructions": ".github/copilot-instructions.md",
+        "agent_tasks": "AGENT_TASKS.json",
+        "project_status": "PROJECT_STATUS.json",
+        "agent_ready_labels": true
+      },
+      "capabilities": [
+        "falsification",
+        "adversarial-fixture",
+        "independent-reproduction",
+        "evidence-boundary-review"
+      ]
     },
     {
       "repository": "JoanAbad82/repasactiu-research-intake",
@@ -293,12 +339,19 @@
         "preferred_submission": "github_issue",
         "production_write_access": false,
         "automatic_promotion": false,
-        "open_challenges_url": "https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready"
+        "open_challenges_url": "https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready",
+        "task_contract_ref": "https://raw.githubusercontent.com/JoanAbad82/repasactiu-research-intake/main/AGENT_TASKS.json"
       },
       "native_agent_surface": {
         "copilot_instructions": ".github/copilot-instructions.md",
         "agent_tasks": "AGENT_TASKS.json"
-      }
+      },
+      "capabilities": [
+        "falsification",
+        "adversarial-fixture",
+        "ambiguity-test",
+        "validator-hypothesis"
+      ]
     }
   ],
   "agent_interaction": {
@@ -309,5 +362,49 @@
     "open_research_challenges": "OPEN_RESEARCH_CHALLENGES.md",
     "agent_index_url": "https://openutilitylab.com/agents.json",
     "llms_url": "https://openutilitylab.com/llms.txt"
+  },
+  "agent_contract_schema": "https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/schemas/agent-task-contract.schema.json",
+  "capability_discovery": {
+    "repository-discovery": [
+      "JoanAbad82/github-hidden-gems"
+    ],
+    "static-analysis": [
+      "JoanAbad82/github-hidden-gems",
+      "JoanAbad82/affiliate-friction-auditor"
+    ],
+    "falsification": [
+      "JoanAbad82/github-hidden-gems-research-intake",
+      "JoanAbad82/repasactiu-research-intake"
+    ],
+    "adversarial-fixture": [
+      "JoanAbad82/github-hidden-gems-research-intake",
+      "JoanAbad82/repasactiu-research-intake"
+    ],
+    "independent-reproduction": [
+      "JoanAbad82/github-hidden-gems-research-intake"
+    ],
+    "evidence-boundary-review": [
+      "JoanAbad82/github-hidden-gems-research-intake"
+    ],
+    "content-validation": [
+      "JoanAbad82/repasactiu",
+      "JoanAbad82/repasactiu-research-intake"
+    ],
+    "source-traceability": [
+      "JoanAbad82/repasactiu"
+    ],
+    "windows-security-audit": [
+      "JoanAbad82/master-security-review"
+    ],
+    "semantic-analysis": [
+      "JoanAbad82/mtgsynergy"
+    ],
+    "learning-software": [
+      "JoanAbad82/repasactiu",
+      "JoanAbad82/programacion-practica"
+    ],
+    "public-agent-routing": [
+      "JoanAbad82/openutilitylab-site"
+    ]
   }
 }

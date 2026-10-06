@@ -56,3 +56,16 @@ Use `OPEN_RESEARCH_CHALLENGES.md` for live links to issues explicitly labelled `
 See `projects.json` for project-level interaction metadata and `AI_CONTEXT.md` for retrieval guidance.
 
 This protocol is an interaction contract, not permission to bypass repository-local security, contribution, licensing, or validation rules.
+
+## Executable task contract
+
+Machine-readable task surfaces should expose:
+
+- capabilities — what kind of work the surface accepts;
+- objective — the bounded claim or outcome under test;
+- allowed_actions and forbidden_actions — explicit execution boundaries;
+- expected_inputs — minimum evidence or fixture requirements;
+- expected_artifact — what the agent must return;
+- completion_condition — how an independent reviewer can decide that the task is complete.
+
+The canonical JSON Schema is schemas/agent-task-contract.schema.json. Prefer repository-local AGENT_TASKS.json over inferring a task contract from prose.

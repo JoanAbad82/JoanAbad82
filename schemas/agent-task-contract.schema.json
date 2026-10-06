@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/schemas/agent-task-contract.schema.json",
+  "title": "JoanAbad82 Agent Task Contract",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "repository",
+    "purpose",
+    "task_contract"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "repository": {
+      "type": "string",
+      "pattern": "^[^/]+/[^/]+$"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "live_query": {
+      "type": "string",
+      "format": "uri"
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "task_contract": {
+      "type": "object",
+      "required": [
+        "external_input_trust",
+        "production_write_access",
+        "automatic_promotion",
+        "expected_artifact"
+      ],
+      "properties": {
+        "objective": {
+          "type": "string"
+        },
+        "allowed_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "forbidden_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "expected_inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "expected_artifact": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "completion_condition": {
+          "type": "string"
+        },
+        "external_input_trust": {
+          "const": "UNTRUSTED_EXTERNAL_INPUT"
+        },
+        "production_write_access": {
+          "const": false
+        },
+        "automatic_promotion": {
+          "const": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "accepted_task_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": true,
+  "anyOf": [
+    {
+      "required": [
+        "capabilities"
+      ]
+    },
+    {
+      "required": [
+        "accepted_task_types"
+      ]
+    }
+  ]
+}
