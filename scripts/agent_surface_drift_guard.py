@@ -23,7 +23,7 @@ class DriftError(RuntimeError):
 
 def fetch_text(url: str, timeout: int = 20) -> str:
     request_url = url
-    if "raw.githubusercontent.com" in url:
+    if "raw.githubusercontent.com" in url or "openutilitylab.com" in url:
         separator = "&" if "?" in url else "?"
         request_url = f"{url}{separator}drift_guard={int(datetime.now(timezone.utc).timestamp())}"
     req = urllib.request.Request(
@@ -130,12 +130,20 @@ def main() -> int:
 
     projects = load_json(root / "projects.json")
     schema = load_json(root / "schemas" / "agent-task-contract.schema.json")
+    task_index_schema = load_json(root / "schemas" / "agent-task-index.schema.json")
     schema_url = projects.get("agent_contract_schema")
+    interaction_meta = projects.get("agent_interaction", {})
+    task_index_url = interaction_meta.get("task_index_url")
+    task_index_schema_url = interaction_meta.get("task_index_schema")
 
     require(isinstance(schema_url, str) and bool(schema_url),
             "projects.json: agent_contract_schema missing", errors)
     require(schema.get("$id") == schema_url,
             f"schema $id drift ({schema.get('$id')!r} != {schema_url!r})", errors)
+    require(task_index_url == "https://openutilitylab.com/tasks.json",
+            "projects.json: task_index_url drift", errors)
+    require(task_index_schema_url == task_index_schema.get("$id"),
+            "projects.json: task_index_schema does not match schema $id", errors)
 
     project_list = projects.get("projects")
     require(isinstance(project_list, list), "projects.json: projects must be an array", errors)
@@ -170,14 +178,70 @@ def main() -> int:
 
     repo_agents = fetch_json(f"{SITE_REPO_RAW}/agents.json")
     live_agents = fetch_json(f"{LIVE_BASE}/agents.json")
+    repo_tasks = fetch_json(f"{SITE_REPO_RAW}/tasks.json")
+    live_tasks = fetch_json(f"{LIVE_BASE}/tasks.json")
     repo_llms = fetch_text(f"{SITE_REPO_RAW}/llms.txt")
     live_llms = fetch_text(f"{LIVE_BASE}/llms.txt")
-    checks.extend(["repo agents.json", "live agents.json", "repo llms.txt", "live llms.txt"])
+    checks.extend([
+        "repo agents.json",
+        "live agents.json",
+        "repo tasks.json",
+        "live tasks.json",
+        "repo llms.txt",
+        "live llms.txt",
+    ])
 
     require(repo_agents == live_agents,
             "deployment drift: live /agents.json differs from openutilitylab-site main", errors)
+    require(repo_tasks == live_tasks,
+            "deployment drift: live /tasks.json differs from openutilitylab-site main", errors)
     require(normalize_text(repo_llms) == normalize_text(live_llms),
             "deployment drift: live /llms.txt differs from openutilitylab-site main", errors)
+
+    concrete = repo_agents.get("concrete_tasks", {})
+    require(isinstance(concrete, dict), "agents.json: concrete_tasks missing", errors)
+    if isinstance(concrete, dict):
+        require(concrete.get("url") == task_index_url,
+                "agents.json: concrete_tasks.url does not match projects.json", errors)
+        require(concrete.get("schema") == task_index_schema_url,
+                "agents.json: concrete_tasks.schema does not match projects.json", errors)
+
+    require(repo_tasks.get("$schema") == task_index_schema_url,
+            "tasks.json: $schema drift", errors)
+    require(repo_tasks.get("owner") == "JoanAbad82",
+            "tasks.json: owner mismatch", errors)
+    task_rows = repo_tasks.get("tasks")
+    require(isinstance(task_rows, list), "tasks.json: tasks must be an array", errors)
+    if not isinstance(task_rows, list):
+        task_rows = []
+    require(repo_tasks.get("task_count") == len(task_rows),
+            "tasks.json: task_count mismatch", errors)
+
+    task_ids: set[str] = set()
+    for task in task_rows:
+        if not isinstance(task, dict):
+            errors.append("tasks.json: non-object task entry")
+            continue
+        task_id = task.get("task_id")
+        repo = task.get("repository")
+        labels = task.get("labels", [])
+        require(isinstance(task_id, str) and bool(task_id),
+                "tasks.json: task missing task_id", errors)
+        if isinstance(task_id, str):
+            require(task_id not in task_ids,
+                    f"tasks.json: duplicate task_id {task_id}", errors)
+            task_ids.add(task_id)
+        require(task.get("state") == "open",
+                f"tasks.json: task {task_id} is not open", errors)
+        require(isinstance(labels, list) and "agent-ready" in labels,
+                f"tasks.json: task {task_id} missing agent-ready label", errors)
+        require(isinstance(repo, str) and repo in project_map,
+                f"tasks.json: task {task_id} references unknown repository {repo!r}", errors)
+        expected_contract = project_map.get(repo, {}).get("interaction", {}).get("task_contract_ref")
+        require(task.get("task_contract") == expected_contract,
+                f"tasks.json: task {task_id} task_contract drift", errors)
+        require(task.get("human_review_required") == ("human-review-required" in labels),
+                f"tasks.json: task {task_id} human_review_required drift", errors)
 
     require(repo_agents.get("project_index") ==
             "https://github.com/JoanAbad82/JoanAbad82/blob/main/projects.json",
@@ -318,7 +382,9 @@ def main() -> int:
 
     for needle in [
         f"{LIVE_BASE}/agents.json",
+        f"{LIVE_BASE}/tasks.json",
         str(schema_url),
+        str(task_index_schema_url),
         "https://raw.githubusercontent.com/JoanAbad82/github-hidden-gems-research-intake/main/AGENT_TASKS.json",
         "https://raw.githubusercontent.com/JoanAbad82/repasactiu-research-intake/main/AGENT_TASKS.json",
     ]:

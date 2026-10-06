@@ -375,7 +375,15 @@
         "PROJECT_STATUS.json task-contract linkage",
         "canonical link availability"
       ]
-    }
+    },
+    "task_index_url": "https://openutilitylab.com/tasks.json",
+    "task_index_schema": "https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/schemas/agent-task-index.schema.json",
+    "conversion_path": [
+      "agents.json",
+      "tasks.json",
+      "concrete GitHub issue",
+      "external issue/PR interaction"
+    ]
   },
   "agent_contract_schema": "https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/schemas/agent-task-contract.schema.json",
   "capability_discovery": {
