@@ -361,7 +361,21 @@
     "automatic_production_promotion": false,
     "open_research_challenges": "OPEN_RESEARCH_CHALLENGES.md",
     "agent_index_url": "https://openutilitylab.com/agents.json",
-    "llms_url": "https://openutilitylab.com/llms.txt"
+    "llms_url": "https://openutilitylab.com/llms.txt",
+    "drift_guard": {
+      "workflow": ".github/workflows/agent-surface-drift.yml",
+      "validator": "scripts/agent_surface_drift_guard.py",
+      "schedule": "daily",
+      "mode": "fail-closed",
+      "checks": [
+        "projects.json capability routing",
+        "openutilitylab-site agents.json repository/live parity",
+        "openutilitylab-site llms.txt repository/live parity",
+        "AGENT_TASKS.json schema/trust/contract consistency",
+        "PROJECT_STATUS.json task-contract linkage",
+        "canonical link availability"
+      ]
+    }
   },
   "agent_contract_schema": "https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/schemas/agent-task-contract.schema.json",
   "capability_discovery": {
@@ -405,6 +419,9 @@
     ],
     "public-agent-routing": [
       "JoanAbad82/openutilitylab-site"
+    ],
+    "affiliate-friction-audit": [
+      "JoanAbad82/affiliate-friction-auditor"
     ]
   }
 }

@@ -1,0 +1,41 @@
+name: Agent surface drift guard
+
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "projects.json"
+      - "AGENT_INTERACTION.md"
+      - "schemas/agent-task-contract.schema.json"
+      - "scripts/agent_surface_drift_guard.py"
+      - ".github/workflows/agent-surface-drift.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  drift-guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out profile surface
+        uses: actions/checkout@v4
+
+      - name: Validate machine-readable agent surfaces
+        run: |
+          python3 scripts/agent_surface_drift_guard.py \
+            --profile-root . \
+            --json-report agent-surface-drift-report.json
+
+      - name: Upload drift report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-surface-drift-report
+          path: agent-surface-drift-report.json
+          if-no-files-found: error
