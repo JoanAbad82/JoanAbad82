@@ -11,6 +11,7 @@ on:
       - "projects.json"
       - "AGENT_INTERACTION.md"
       - "schemas/agent-task-contract.schema.json"
+      - "schemas/agent-task-index.schema.json"
       - "scripts/agent_surface_drift_guard.py"
       - ".github/workflows/agent-surface-drift.yml"
 

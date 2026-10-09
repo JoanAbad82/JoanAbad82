@@ -198,6 +198,99 @@ def main() -> int:
     require(normalize_text(repo_llms) == normalize_text(live_llms),
             "deployment drift: live /llms.txt differs from openutilitylab-site main", errors)
 
+    profile_custom_agent_refs: set[tuple[str, str]] = set()
+    for repo, project in project_map.items():
+        native = project.get("native_agent_surface")
+        if not isinstance(native, dict):
+            continue
+        custom = native.get("custom_agents")
+        if custom is None:
+            continue
+        require(isinstance(custom, list),
+                f"projects.json: {repo} custom_agents must be an array", errors)
+        if not isinstance(custom, list):
+            continue
+        for path in custom:
+            require(isinstance(path, str) and path.startswith(".github/agents/"),
+                    f"projects.json: invalid custom agent path for {repo}: {path!r}", errors)
+            if not isinstance(path, str):
+                continue
+            ref = (repo, path)
+            require(ref not in profile_custom_agent_refs,
+                    f"projects.json: duplicate custom agent ref {repo}:{path}", errors)
+            profile_custom_agent_refs.add(ref)
+            try:
+                fetch_text(f"https://raw.githubusercontent.com/{repo}/main/{path}")
+                checks.append(f"custom_agent {repo}:{path}")
+            except DriftError as exc:
+                errors.append(str(exc))
+
+    router_custom_agents = repo_agents.get("custom_agents")
+    require(isinstance(router_custom_agents, list) and len(router_custom_agents) > 0,
+            "agents.json: custom_agents missing/empty", errors)
+    if not isinstance(router_custom_agents, list):
+        router_custom_agents = []
+
+    router_custom_agent_refs: set[tuple[str, str]] = set()
+    router_custom_agent_names: set[str] = set()
+    for agent in router_custom_agents:
+        if not isinstance(agent, dict):
+            errors.append("agents.json: custom_agents contains non-object")
+            continue
+        name = agent.get("name")
+        repository = agent.get("repository")
+        path = agent.get("path")
+        require(isinstance(name, str) and bool(name.strip()),
+                "agents.json: custom agent missing name", errors)
+        require(isinstance(repository, str) and bool(repository),
+                f"agents.json: custom agent {name!r} missing repository", errors)
+        require(isinstance(path, str) and path.startswith(".github/agents/"),
+                f"agents.json: custom agent {name!r} has invalid path {path!r}", errors)
+        if isinstance(name, str):
+            require(name not in router_custom_agent_names,
+                    f"agents.json: duplicate custom agent name {name!r}", errors)
+            router_custom_agent_names.add(name)
+        if isinstance(repository, str) and isinstance(path, str):
+            router_custom_agent_refs.add((repository, path))
+
+    require(router_custom_agent_refs == profile_custom_agent_refs,
+            "custom-agent drift: agents.json registry differs from projects.json native_agent_surface.custom_agents",
+            errors)
+
+    evidence_auditor = next(
+        (
+            agent for agent in router_custom_agents
+            if isinstance(agent, dict) and agent.get("name") == "Evidence Auditor"
+        ),
+        None,
+    )
+    require(isinstance(evidence_auditor, dict),
+            "agents.json: Evidence Auditor missing", errors)
+    if isinstance(evidence_auditor, dict):
+        require(evidence_auditor.get("repository") == "JoanAbad82/github-hidden-gems",
+                "agents.json: Evidence Auditor repository drift", errors)
+        require(evidence_auditor.get("path") == ".github/agents/evidence-auditor.agent.md",
+                "agents.json: Evidence Auditor path drift", errors)
+        require(evidence_auditor.get("safety") == "read-only",
+                "agents.json: Evidence Auditor safety must remain read-only", errors)
+        require(evidence_auditor.get("user_invocable") is True,
+                "agents.json: Evidence Auditor must remain user-invocable", errors)
+
+    surface_review_agent_by_repo: dict[str, str] = {}
+    raw_task_surfaces = repo_agents.get("task_surfaces", [])
+    if isinstance(raw_task_surfaces, list):
+        for surface in raw_task_surfaces:
+            if not isinstance(surface, dict):
+                continue
+            repo = surface.get("repository")
+            recommended = surface.get("recommended_review_agent")
+            if isinstance(repo, str) and recommended is not None:
+                require(isinstance(recommended, str) and recommended in router_custom_agent_names,
+                        f"agents.json: task surface {repo} references unknown recommended_review_agent {recommended!r}",
+                        errors)
+                if isinstance(recommended, str):
+                    surface_review_agent_by_repo[repo] = recommended
+
     concrete = repo_agents.get("concrete_tasks", {})
     require(isinstance(concrete, dict), "agents.json: concrete_tasks missing", errors)
     if isinstance(concrete, dict):
@@ -242,6 +335,13 @@ def main() -> int:
                 f"tasks.json: task {task_id} task_contract drift", errors)
         require(task.get("human_review_required") == ("human-review-required" in labels),
                 f"tasks.json: task {task_id} human_review_required drift", errors)
+        expected_review_agent = surface_review_agent_by_repo.get(str(repo))
+        if expected_review_agent is not None:
+            require(task.get("recommended_review_agent") == expected_review_agent,
+                    f"tasks.json: task {task_id} recommended_review_agent drift", errors)
+        elif "recommended_review_agent" in task:
+            require(False,
+                    f"tasks.json: task {task_id} has unrouted recommended_review_agent", errors)
 
     require(repo_agents.get("project_index") ==
             "https://github.com/JoanAbad82/JoanAbad82/blob/main/projects.json",
@@ -385,6 +485,7 @@ def main() -> int:
         f"{LIVE_BASE}/tasks.json",
         str(schema_url),
         str(task_index_schema_url),
+        "https://github.com/JoanAbad82/github-hidden-gems/blob/main/.github/agents/evidence-auditor.agent.md",
         "https://raw.githubusercontent.com/JoanAbad82/github-hidden-gems-research-intake/main/AGENT_TASKS.json",
         "https://raw.githubusercontent.com/JoanAbad82/repasactiu-research-intake/main/AGENT_TASKS.json",
     ]:

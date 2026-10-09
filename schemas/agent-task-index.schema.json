@@ -23,12 +23,19 @@
       "minLength": 1
     },
     "updated_at": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "format": "date-time"
     },
     "source_policy": {
       "type": "object",
-      "required": ["state", "label", "repositories"],
+      "required": [
+        "state",
+        "label",
+        "repositories"
+      ],
       "properties": {
         "state": {
           "const": "open"
@@ -118,6 +125,10 @@
           },
           "human_review_required": {
             "type": "boolean"
+          },
+          "recommended_review_agent": {
+            "type": "string",
+            "minLength": 1
           }
         },
         "additionalProperties": true
