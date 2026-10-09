@@ -41,10 +41,11 @@ If you are evaluating or interacting with this work, start with [`AGENT_INTERACT
 
 External hypotheses and adversarial cases are intentionally separated from production:
 
+- [Engineering & Research Roadmap](https://github.com/users/JoanAbad82/projects/1) — public cross-project view of real research and validation work.
 - [GitHub Hidden Gems Research Intake](https://github.com/JoanAbad82/github-hidden-gems-research-intake)
 - [Repàs Actiu Research Intake](https://github.com/JoanAbad82/repasactiu-research-intake)
 
-These repositories do not provide an automatic promotion path into production.
+The roadmap tracks existing work only; these research repositories do not provide an automatic promotion path into production.
 
 ## Machine-readable profile
 
