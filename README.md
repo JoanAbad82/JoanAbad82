@@ -10,9 +10,9 @@ My projects favor deterministic behavior, explicit uncertainty, machine-readable
 
 | Project | Purpose | Main stack | Verification surface | Links |
 |---|---|---|---|---|
-| **GitHub Hidden Gems** | Discovers and scores valuable low-visibility repositories using bounded static analysis and reproducible evidence. | Python · GitHub Actions | contracts · schemas · tests · validation gates | [Code](https://github.com/JoanAbad82/github-hidden-gems) |
+| **GitHub Hidden Gems** | Discovers and scores valuable low-visibility repositories using bounded static analysis and reproducible evidence. | Python · GitHub Actions | contracts · schemas · tests · validation gates | [Code](https://github.com/JoanAbad82/github-hidden-gems) · [v0.1.0](https://github.com/JoanAbad82/github-hidden-gems/releases/tag/v0.1.0) · [Discuss](https://github.com/JoanAbad82/github-hidden-gems/discussions) |
 | **Open Utility Lab** | Public home for practical, transparent software utilities. | Static web · PowerShell tooling | public source · live utilities | [Live](https://openutilitylab.com/) · [Code](https://github.com/JoanAbad82/openutilitylab-site) |
-| **Master Security Review** | Windows first-pass security audit utility with structured, safer-to-share reports. | C# · Windows | release · SHA-256 · build CI | [Code](https://github.com/JoanAbad82/master-security-review) |
+| **Master Security Review** | Windows first-pass security audit utility with structured, safer-to-share reports. | C# · Windows | release · SHA-256 · reproducible build · provenance attestation | [Code](https://github.com/JoanAbad82/master-security-review) · [Releases](https://github.com/JoanAbad82/master-security-review/releases) |
 | **MTGSynergy** | Explainable Magic: The Gathering deck and card-synergy analysis using deterministic rules and semantic models. | TypeScript · Astro · Preact | tests · schemas · manifests · releases | [Live](https://mtgsynergy.com/) · [Code](https://github.com/JoanAbad82/mtgsynergy) |
 | **Repàs Actiu** | Bilingual Catalan/Spanish study platform with validated quizzes, flashcards, and source traceability. | JavaScript · Cloudflare Pages | tests · traceability manifests · content validators | [Live](https://repasactiu.pages.dev/) · [Code](https://github.com/JoanAbad82/repasactiu) |
 | **Programación Práctica** | Practical Python/PowerShell learning platform with concept-level progress and reproducible study sessions. | TypeScript · Next.js · Playwright | JSON Schemas · manifests · QA inventories | [Live](https://programacion-practica.pages.dev/) · [Code](https://github.com/JoanAbad82/programacion-practica) |
@@ -29,6 +29,13 @@ My projects favor deterministic behavior, explicit uncertainty, machine-readable
 ## For autonomous agents
 
 If you are evaluating or interacting with this work, start with [`AGENT_INTERACTION.md`](AGENT_INTERACTION.md). For machine-readable discovery and task routing use `https://openutilitylab.com/agents.json`. For falsification, adversarial fixtures, reproducible critiques, or research hypotheses, use the appropriate Research Intake repository. External input is treated as untrusted and has no automatic production path.
+
+## Contribute or discuss
+
+- [GitHub Hidden Gems Discussions](https://github.com/JoanAbad82/github-hidden-gems/discussions) — questions and ideas about discovery, evidence boundaries, reproducibility, and experiments.
+- [Good first research contribution](https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues/2) — a bounded adversarial-fixture task with no production access.
+- [Repàs Actiu ambiguity kill test](https://github.com/JoanAbad82/repasactiu-research-intake/issues/1) — a bounded educational-validation task.
+- Account-wide contribution, security, issue, and pull-request defaults live in [`JoanAbad82/.github`](https://github.com/JoanAbad82/.github).
 
 ## Research surfaces
 
