@@ -62,7 +62,8 @@
         "agent_tasks": "AGENT_TASKS.json",
         "custom_agents": [
           ".github/agents/hidden-gems-falsifier.md",
-          ".github/agents/evidence-boundary-reviewer.md"
+          ".github/agents/evidence-boundary-reviewer.md",
+          ".github/agents/evidence-auditor.agent.md"
         ]
       },
       "capabilities": [
