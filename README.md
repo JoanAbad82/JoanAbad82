@@ -6,6 +6,31 @@ I build reproducible software systems for **automation, evidence-driven analysis
 
 My projects favor deterministic behavior, explicit uncertainty, machine-readable evidence, inspectable workflows, and local/client-side execution where it improves privacy or simplicity.
 
+<!-- portfolio-pulse:start -->
+## Verified collaboration and contribution opportunities
+
+This section is updated automatically from **public GitHub records** when facts change.
+It does not represent visitor counts, paid promotion, or an endorsement of unreviewed pull requests.
+
+**Accepted upstream contributions**
+
+- [pic-standard/pic-standard #182: docs: walkthrough for valid and tampered Ed25519 evidence](https://github.com/pic-standard/pic-standard/pull/182)
+
+**Community pull requests to review**
+
+- [JoanAbad82/mtgsynergy #68: test: cover cards-index verifier with isolated fixtures (by jay23606; **review pending**)](https://github.com/JoanAbad82/mtgsynergy/pull/68)
+- [JoanAbad82/github-hidden-gems #33: Add valid/invalid fixtures for RUN\_CANDIDATES\_V1 schema (by CRYPTONIKAV; **review pending**)](https://github.com/JoanAbad82/github-hidden-gems/pull/33)
+
+**Starter tasks open to contributors**
+
+- [JoanAbad82/master-security-review #10: Add CITATION.cff for canonical project citation](https://github.com/JoanAbad82/master-security-review/issues/10)
+- [JoanAbad82/openutilitylab-site #15: Add a published JSON Schema for agents.json](https://github.com/JoanAbad82/openutilitylab-site/issues/15)
+- [JoanAbad82/repasactiu-research-intake #1: question-ambiguity-killtest-v1 — break the one-correct-answer assumption](https://github.com/JoanAbad82/repasactiu-research-intake/issues/1)
+- [JoanAbad82/github-hidden-gems-research-intake #2: \[Agent Pilot\] Adversarial fixtures for evidence-boundary falsification](https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues/2)
+
+Tasks may already have an active contributor. Check the issue discussion before starting.
+<!-- portfolio-pulse:end -->
+
 ## Selected work
 
 | Project | Purpose | Main stack | Verification surface | Links |

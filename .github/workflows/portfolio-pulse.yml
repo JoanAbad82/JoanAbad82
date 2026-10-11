@@ -1,0 +1,52 @@
+name: Portfolio Pulse | verified GitHub activity
+
+on:
+  schedule:
+    - cron: "23 7 * * 3"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/portfolio_pulse.py"
+      - "tests/test_portfolio_pulse.py"
+      - ".github/workflows/portfolio-pulse.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: portfolio-pulse-main
+  cancel-in-progress: false
+
+jobs:
+  curate-profile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout profile repository
+        uses: actions/checkout@v4
+
+      - name: Validate with offline security tests
+        run: python3 -m unittest discover -s tests -p test_portfolio_pulse.py -v
+
+      - name: Collect verified public GitHub collaboration
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$GITHUB_REPOSITORY" = "JoanAbad82/JoanAbad82"
+          python3 scripts/portfolio_pulse.py --readme README.md --snapshot profile-pulse.json
+
+      - name: Commit only facts that changed
+        run: |
+          test "$GITHUB_REPOSITORY" = "JoanAbad82/JoanAbad82"
+          git add -- README.md profile-pulse.json
+          if git diff --cached --quiet; then
+            echo "No verified changes; no profile update." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git diff --cached --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "docs(profile): refresh verified collaboration pulse [skip ci]"
+          git push origin HEAD:main
+          echo "Verified profile section and JSON index updated." >> "$GITHUB_STEP_SUMMARY"
