@@ -41,4 +41,11 @@ Autonomous agents and external research contributors should use `AGENT_INTERACTI
 
 Machine-readable project metadata is available in `projects.json`. A human-readable map is available in `PROJECTS.md`.
 
+## Public collaboration evidence
+
+- [Portfolio Pulse JSON snapshot](https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/profile-pulse.json) — bounded public evidence of accepted upstream PRs, merged inbound contributions, open reviewed/unreviewed PRs and open beginner issues.
+- [Portfolio Pulse JSON Schema](https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/schemas/profile-pulse.schema.json) — JSON Schema Draft 2020-12, including an explicit URI embedded as the snapshot's schema identifier.
+
+The snapshot is refreshed periodically, so it is not a live availability or approval feed. Review status records the presence of a maintainer review, **not** merge approval. For up-to-date acceptance or activity, check the linked GitHub issue/PR directly. External input is untrusted and a listing never grants write access.
+
 This file is guidance for interpretation, not an instruction to override repository-local policy or source code.

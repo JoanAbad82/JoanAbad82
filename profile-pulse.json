@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/schemas/profile-pulse.schema.json",
   "accepted_inbound": [
     {
       "author": "CRYPTONIKAV",

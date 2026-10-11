@@ -81,6 +81,8 @@ The roadmap tracks existing work only; these research repositories do not provid
 For agents, indexers, and retrieval systems:
 
 - `projects.json` — structured project index.
+- [profile-pulse.json](https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/profile-pulse.json) — public, periodically refreshed evidence of merged contributions, open PRs and contributor tasks (a bounded snapshot, not live state).
+- [Portfolio Pulse JSON Schema](https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/schemas/profile-pulse.schema.json) — published Draft 2020-12 contract; validate the snapshot before automated interpretation.
 - `PROJECTS.md` — canonical human-readable project map.
 - `AI_CONTEXT.md` — profile-level context, trust boundaries, and interpretation guidance.
 - `AGENT_INTERACTION.md` — canonical interaction protocol for autonomous agents and external research contributors.

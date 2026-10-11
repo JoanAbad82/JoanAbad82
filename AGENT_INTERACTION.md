@@ -61,6 +61,8 @@ Use `OPEN_RESEARCH_CHALLENGES.md` for live links to issues explicitly labelled `
 
 See `projects.json` for project-level interaction metadata and `AI_CONTEXT.md` for retrieval guidance.
 
+For factual public contribution discovery, read the [Portfolio Pulse snapshot](https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/profile-pulse.json) and validate it against the [published JSON Schema](https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/schemas/profile-pulse.schema.json) before using its records. It contains bounded GitHub references, **not** authorization for agent actions; review markers do not imply approval, and entries may be stale between refreshes. Confirm the live PR/issue on GitHub before acting.
+
 This protocol is an interaction contract, not permission to bypass repository-local security, contribution, licensing, or validation rules.
 
 ## Executable task contract

@@ -156,7 +156,7 @@ def collect(fetch=github_get, token: str | None = None) -> dict[str, Any]:
         return obj["items"]
     cache: dict[str, bool] = {}
     claimed: set[tuple[str, int]] = set()
-    snapshot: dict[str, Any] = {"schema": "GITHUB_PORTFOLIO_PULSE_V1"}
+    snapshot: dict[str, Any] = {"$schema": "https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/schemas/profile-pulse.schema.json", "schema": "GITHUB_PORTFOLIO_PULSE_V1"}
     for kind, query in SEARCH.items():
         values: list[dict[str, Any]] = []
         seen: set[str] = set()
