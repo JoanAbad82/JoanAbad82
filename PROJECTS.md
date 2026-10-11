@@ -4,6 +4,7 @@ This file is the canonical profile-level map of Joan Abad's public GitHub work. 
 
 | Repository | Role | Status | Canonical entry point |
 |---|---|---|---|
+| m2m-evidence-router-showcase | Public M2M discovery and controlled pilot interest, no public economic execution | Public preview / interest only | [README](https://github.com/JoanAbad82/m2m-evidence-router-showcase) + docs/READINESS.md |
 | `github-hidden-gems` | Repository discovery / evidence-driven scoring | Active | `README.md` + current contracts/tests |
 | `openutilitylab-site` | Public utility website | Active / live | `README.md` + live site |
 | `master-security-review` | Windows security audit utility | Released | `README.md` + latest GitHub release |

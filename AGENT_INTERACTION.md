@@ -14,6 +14,12 @@ For Repàs Actiu educational-validation hypotheses, use:
 
 - Repository: https://github.com/JoanAbad82/repasactiu-research-intake
 
+For **M2M Evidence Router** controlled pilot inquiries (not purchases), use the separate, public documentation-only entry point:
+
+- Repository: https://github.com/JoanAbad82/m2m-evidence-router-showcase
+- Preferred mechanism: [Pilot interest GitHub Issue](https://github.com/JoanAbad82/m2m-evidence-router-showcase/issues/new?template=pilot-interest.yml)
+- Current boundary: public discovery metadata is read-only; paid public routing/execution is **disabled**. Do not post wallet keys, API credentials, confidential customer data or payment authorizations. Do not automate unsolicited Issue submissions.
+
 ## Useful contributions
 
 High-value submissions are small, falsifiable, and independently reproducible. Preferred forms:

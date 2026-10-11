@@ -353,6 +353,38 @@
         "ambiguity-test",
         "validator-hypothesis"
       ]
+    },
+    {
+      "repository": "JoanAbad82/m2m-evidence-router-showcase",
+      "role": "m2m-public-discovery-and-controlled-pilot-intake",
+      "status": "public-preview-no-self-service-payments",
+      "language": "Markdown",
+      "license": "Apache-2.0",
+      "live_url": "https://m2m-evidence-router-discovery.abadbatallajoan.workers.dev/",
+      "canonical_entry": [
+        "README.md",
+        "AGENTS.md",
+        "docs/READINESS.md",
+        "docs/WALKTHROUGH.md"
+      ],
+      "verification": [
+        "GitHub Actions read-only documentation checks",
+        "synthetic example",
+        "public read-only discovery"
+      ],
+      "interaction": {
+        "accepts_external_hypotheses": false,
+        "agent_entrypoint": "JoanAbad82/m2m-evidence-router-showcase",
+        "preferred_submission": "github_pilot_interest_issue",
+        "production_write_access": false,
+        "pilot_request_url": "https://github.com/JoanAbad82/m2m-evidence-router-showcase/issues/new?template=pilot-interest.yml",
+        "economic_execution_enabled": false
+      },
+      "capabilities": [
+        "agent-discovery-metadata",
+        "evidence-aware-routing-overview",
+        "controlled-pilot-interest"
+      ]
     }
   ],
   "agent_interaction": {
