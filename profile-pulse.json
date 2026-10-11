@@ -1,4 +1,13 @@
 {
+  "accepted_inbound": [
+    {
+      "author": "CRYPTONIKAV",
+      "number": 33,
+      "repo": "JoanAbad82/github-hidden-gems",
+      "title": "Add valid/invalid fixtures for RUN_CANDIDATES_V1 schema",
+      "url": "https://github.com/JoanAbad82/github-hidden-gems/pull/33"
+    }
+  ],
   "accepted_upstream": [
     {
       "author": "JoanAbad82",
@@ -43,15 +52,9 @@
       "author": "jay23606",
       "number": 68,
       "repo": "JoanAbad82/mtgsynergy",
+      "review_status": "maintainer review recorded",
       "title": "test: cover cards-index verifier with isolated fixtures",
       "url": "https://github.com/JoanAbad82/mtgsynergy/pull/68"
-    },
-    {
-      "author": "CRYPTONIKAV",
-      "number": 33,
-      "repo": "JoanAbad82/github-hidden-gems",
-      "title": "Add valid/invalid fixtures for RUN_CANDIDATES_V1 schema",
-      "url": "https://github.com/JoanAbad82/github-hidden-gems/pull/33"
     }
   ],
   "schema": "GITHUB_PORTFOLIO_PULSE_V1"

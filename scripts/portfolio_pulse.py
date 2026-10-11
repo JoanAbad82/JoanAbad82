@@ -30,10 +30,11 @@ ISSUE_URL = re.compile(
 MAX_READ = 1024 * 1024
 SEARCH = {
     "accepted_upstream": "is:pr is:merged author:JoanAbad82 -user:JoanAbad82",
+    "accepted_inbound": "is:pr is:merged user:JoanAbad82 -author:JoanAbad82",
     "external_inbound": "is:pr is:open user:JoanAbad82 -author:JoanAbad82",
     "contribution_tasks": 'is:issue is:open user:JoanAbad82 label:"good first issue" -linked:pr',
 }
-LIMITS = {"accepted_upstream": 3, "external_inbound": 3, "contribution_tasks": 4}
+LIMITS = {"accepted_upstream": 3, "accepted_inbound": 3, "external_inbound": 3, "contribution_tasks": 4}
 
 
 class CuratorError(RuntimeError):
@@ -63,7 +64,7 @@ def github_get(endpoint: str, token: str | None) -> dict[str, Any]:
         value = json.loads(data)
     except (ValueError, UnicodeError) as exc:
         raise CuratorError("Invalid GitHub JSON") from exc
-    if type(value) is not dict:
+    if type(value) not in (dict, list):
         raise CuratorError("Unexpected GitHub response")
     return value
 
@@ -107,10 +108,14 @@ def parse_issue(item: dict[str, Any], kind: str) -> dict[str, Any] | None:
         return None
     if kind == "accepted_upstream" and (owner.lower() == OWNER.lower() or login.lower() != OWNER.lower()):
         return None
-    if kind in ("external_inbound", "contribution_tasks") and owner.lower() != OWNER.lower():
+    if kind in ("accepted_inbound", "external_inbound", "contribution_tasks") and owner.lower() != OWNER.lower():
         return None
-    if kind == "external_inbound" and login.lower() == OWNER.lower():
+    if kind in ("accepted_inbound", "external_inbound") and login.lower() == OWNER.lower():
         return None
+    if kind in ("accepted_upstream", "accepted_inbound"):
+        pull = item.get("pull_request")
+        if item.get("state") != "closed" or type(pull) is not dict or not pull.get("merged_at"):
+            return None
     if kind == "contribution_tasks" and item.get("state") != "open":
         return None
     if kind == "external_inbound" and item.get("state") != "open":
@@ -146,7 +151,7 @@ def collect(fetch=github_get, token: str | None = None) -> dict[str, Any]:
             "q": query, "per_page": "100", "sort": "updated", "order": "desc"
         })
         obj = fetch(url, token)
-        if obj.get("incomplete_results") is True or type(obj.get("items")) is not list:
+        if type(obj) is not dict or obj.get("incomplete_results") is True or type(obj.get("items")) is not list:
             raise CuratorError("Incomplete or invalid GitHub search")
         return obj["items"]
     cache: dict[str, bool] = {}
@@ -168,6 +173,8 @@ def collect(fetch=github_get, token: str | None = None) -> dict[str, Any]:
                     if not (LOGIN_RE.fullmatch(owner) and REPO_RE.fullmatch(name)):
                         continue
                     meta = fetch(f"/repos/{owner}/{name}", token)
+                    if type(meta) is not dict:
+                        raise CuratorError("Invalid repository metadata")
                     cache[fullname] = (meta.get("private") is False and str(meta.get("full_name", "")).lower() == fullname.lower())
                 except (ValueError, AttributeError):
                     continue
@@ -175,6 +182,20 @@ def collect(fetch=github_get, token: str | None = None) -> dict[str, Any]:
                 continue
             if kind == "contribution_tasks" and (fullname.lower(), candidate["number"]) in claimed:
                 continue
+            if kind == "external_inbound":
+                # A submitted review is evidence of review activity, not merge approval.
+                owner, name = fullname.split("/", 1)
+                reviews = fetch(f"/repos/{owner}/{name}/pulls/{candidate['number']}/reviews?per_page=100", token)
+                if type(reviews) is not list or len(reviews) >= 100:
+                    raise CuratorError("Missing or potentially truncated PR reviews")
+                reviewed = any(
+                    type(review) is dict
+                    and type(review.get("user")) is dict
+                    and str(review["user"].get("login", "")).lower() == OWNER.lower()
+                    and review.get("state") in ("COMMENTED", "APPROVED", "CHANGES_REQUESTED")
+                    for review in reviews
+                )
+                candidate["review_status"] = "maintainer review recorded" if reviewed else "no maintainer review recorded"
             if kind == "external_inbound" and type(item.get("body")) is str:
                 # PR bodies refer to the same repository. These are hints
                 # for hiding claimed issues, not permission to change them.
@@ -210,7 +231,8 @@ def render(snapshot: dict[str, Any]) -> str:
     ]
     groups = [
         ("accepted_upstream", "**Accepted upstream contributions**"),
-        ("external_inbound", "**Community pull requests to review**"),
+        ("accepted_inbound", "**Merged community contributions**"),
+        ("external_inbound", "**Open community pull requests**"),
         ("contribution_tasks", "**Starter tasks open to contributors**"),
     ]
     for key, title in groups:
@@ -221,8 +243,10 @@ def render(snapshot: dict[str, Any]) -> str:
             rows.append("- No verified public entries currently available.")
         for item in items:
             label = f"{safe_md(item['repo'])} #{item['number']}: {safe_md(item['title'])}"
+            if key == "accepted_inbound":
+                label += f" (by {safe_md(item['author'])}; **merged**)"
             if key == "external_inbound":
-                label += f" (by {safe_md(item['author'])}; **review pending**)"
+                label += f" (by {safe_md(item['author'])}; **{safe_md(item['review_status'])}**)"
             rows.append(f"- [{label}]({item['url']})")
         rows.append("")
     rows.extend([

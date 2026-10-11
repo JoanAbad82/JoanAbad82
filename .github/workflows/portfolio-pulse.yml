@@ -2,7 +2,7 @@ name: Portfolio Pulse | verified GitHub activity
 
 on:
   schedule:
-    - cron: "23 7 * * 3"
+    - cron: "23 7 * * *"
   workflow_dispatch:
   push:
     branches: [main]
