@@ -39,13 +39,6 @@
       "repo": "JoanAbad82/repasactiu-research-intake",
       "title": "question-ambiguity-killtest-v1 — break the one-correct-answer assumption",
       "url": "https://github.com/JoanAbad82/repasactiu-research-intake/issues/1"
-    },
-    {
-      "author": "JoanAbad82",
-      "number": 2,
-      "repo": "JoanAbad82/github-hidden-gems-research-intake",
-      "title": "[Agent Pilot] Adversarial fixtures for evidence-boundary falsification",
-      "url": "https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues/2"
     }
   ],
   "external_inbound": [
@@ -58,6 +51,6 @@
       "url": "https://github.com/JoanAbad82/mtgsynergy/pull/68"
     }
   ],
-  "generated_at": "2026-10-12T14:35:41Z",
+  "generated_at": "2026-10-12T15:35:26Z",
   "schema": "GITHUB_PORTFOLIO_PULSE_V1"
 }

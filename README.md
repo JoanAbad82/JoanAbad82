@@ -29,7 +29,6 @@ It does not represent visitor counts, paid promotion, or an endorsement of unrev
 - [JoanAbad82/master-security-review #10: Add CITATION.cff for canonical project citation](https://github.com/JoanAbad82/master-security-review/issues/10)
 - [JoanAbad82/openutilitylab-site #15: Add a published JSON Schema for agents.json](https://github.com/JoanAbad82/openutilitylab-site/issues/15)
 - [JoanAbad82/repasactiu-research-intake #1: question-ambiguity-killtest-v1 — break the one-correct-answer assumption](https://github.com/JoanAbad82/repasactiu-research-intake/issues/1)
-- [JoanAbad82/github-hidden-gems-research-intake #2: \[Agent Pilot\] Adversarial fixtures for evidence-boundary falsification](https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues/2)
 
 Tasks may already have an active contributor. Check the issue discussion before starting.
 <!-- portfolio-pulse:end -->
