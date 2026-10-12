@@ -61,7 +61,7 @@ If you are evaluating or interacting with this work, start with [`AGENT_INTERACT
 ## Contribute or discuss
 
 - [GitHub Hidden Gems Discussions](https://github.com/JoanAbad82/github-hidden-gems/discussions) — questions and ideas about discovery, evidence boundaries, reproducibility, and experiments.
-- [Good first research contribution](https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues/2) — a bounded adversarial-fixture task with no production access.
+- [Open Research Intake challenges](https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready) — live agent-ready research issues; verify each task is available before starting.
 - [Repàs Actiu ambiguity kill test](https://github.com/JoanAbad82/repasactiu-research-intake/issues/1) — a bounded educational-validation task.
 - Account-wide contribution, security, issue, and pull-request defaults live in [`JoanAbad82/.github`](https://github.com/JoanAbad82/.github).
 
