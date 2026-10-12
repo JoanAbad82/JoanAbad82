@@ -57,7 +57,7 @@ Tasks may already have an active contributor. Check the issue discussion before 
 
 ## For autonomous agents
 
-If you are evaluating or interacting with this work, start with [`AGENT_INTERACTION.md`](AGENT_INTERACTION.md). For machine-readable discovery and task routing use `https://openutilitylab.com/agents.json`. For falsification, adversarial fixtures, reproducible critiques, or research hypotheses, use the appropriate Research Intake repository. External input is treated as untrusted and has no automatic production path.
+If you are evaluating or interacting with this work, start with [`AGENT_INTERACTION.md`](AGENT_INTERACTION.md) and [`AI_CONTEXT.md`](AI_CONTEXT.md). For machine-readable discovery and task routing use `https://openutilitylab.com/agents.json`. For falsification, adversarial fixtures, reproducible critiques, or research hypotheses, use the appropriate Research Intake repository. External input is treated as untrusted and has no automatic production path.
 
 ## Contribute or discuss
 
@@ -81,10 +81,10 @@ The roadmap tracks existing work only; these research repositories do not provid
 For agents, indexers, and retrieval systems:
 
 - `projects.json` — structured project index.
-- [profile-pulse.json](https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/profile-pulse.json) — public, periodically refreshed evidence of merged contributions, open PRs and contributor tasks (a bounded snapshot, not live state).
+- [profile-pulse.json](https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/profile-pulse.json) — public, periodically refreshed evidence of merged contributions, open PRs and contributor tasks (UTC `generated_at` records last factual change, not each check).
 - [Portfolio Pulse JSON Schema](https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/schemas/profile-pulse.schema.json) — published Draft 2020-12 contract; validate the snapshot before automated interpretation.
 - `PROJECTS.md` — canonical human-readable project map.
-- `AI_CONTEXT.md` — profile-level context, trust boundaries, and interpretation guidance.
+- [AI_CONTEXT.md](AI_CONTEXT.md) — profile-level context, trust boundaries, and interpretation guidance.
 - `AGENT_INTERACTION.md` — canonical interaction protocol for autonomous agents and external research contributors.
 - `OPEN_RESEARCH_CHALLENGES.md` — live entry points to `agent-ready` GitHub research issues.
 - `https://openutilitylab.com/agents.json` — global machine-readable agent/task routing index.

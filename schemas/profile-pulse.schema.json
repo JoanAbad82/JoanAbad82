@@ -56,6 +56,12 @@
       "items": {
         "$ref": "#/$defs/issue"
       }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$",
+      "description": "UTC time of most recent material change to the evidence snapshot, unchanged by repeated polling of identical facts. Optional for V1 backwards compatibility; mandatory for the published profile snapshot."
     }
   },
   "$defs": {
