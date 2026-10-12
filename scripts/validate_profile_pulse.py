@@ -7,6 +7,7 @@ not the freshness or authenticity of live GitHub metadata.
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 import re
@@ -39,7 +40,7 @@ def validate_contract(schema: dict, snapshot: dict) -> None:
     Draft202012Validator.check_schema(schema)
     if schema.get("$id") != SCHEMA_URI:
         raise ContractError("Unexpected JSON Schema identifier")
-    validator = Draft202012Validator(schema)
+    validator = Draft202012Validator(schema, format_checker=Draft202012Validator.FORMAT_CHECKER)
     errors = sorted(validator.iter_errors(snapshot), key=lambda x: (str(list(x.absolute_path)), x.message))
     if errors:
         issue = errors[0]
@@ -69,8 +70,23 @@ def validate_contract(schema: dict, snapshot: dict) -> None:
                 raise ContractError(f"{group}: community PR must be authored externally")
 
 
+def check_published_timestamp(snapshot: dict) -> None:
+    """Backward-compatible schema, strict published snapshot; not an authenticity signature."""
+    value = snapshot.get("generated_at")
+    if type(value) is not str or not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", value):
+        raise ContractError("Missing or malformed UTC generated_at")
+    try:
+        generated = datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except ValueError as exc:
+        raise ContractError("Invalid UTC generated_at calendar date") from exc
+    if generated > datetime.now(timezone.utc) + timedelta(minutes=5):
+        raise ContractError("Future UTC generated_at")
+
+
 def check_discovery(root: Path) -> None:
     """Public landing points must link directly to data and its actual schema."""
+    if "[AI_CONTEXT.md](AI_CONTEXT.md)" not in (root / "README.md").read_text(encoding="utf-8"):
+        raise ContractError("README.md: missing direct AI_CONTEXT.md link")
     for relative in ("README.md", "AI_CONTEXT.md", "AGENT_INTERACTION.md"):
         data = (root / relative).read_text(encoding="utf-8")
         for uri in (SNAPSHOT_URI, SCHEMA_URI):
@@ -82,6 +98,7 @@ def run(root: Path) -> dict:
     schema = load_object(root / "schemas/profile-pulse.schema.json")
     snapshot = load_object(root / "profile-pulse.json")
     validate_contract(schema, snapshot)
+    check_published_timestamp(snapshot)
     check_discovery(root)
     return {name: len(snapshot[name]) for name in CATEGORIES}
 

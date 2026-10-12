@@ -6,6 +6,7 @@ a deterministic JSON snapshot. No repository other than the profile is writable.
 """
 from __future__ import annotations
 
+from datetime import datetime, timezone
 import argparse
 import html
 import json
@@ -271,12 +272,35 @@ def insert_bounded_section(original: str, generated: str) -> str:
     return original.replace(anchor, generated + "\n\n" + anchor, 1)
 
 
-def run(readme: Path, snapshot_file: Path, token: str | None) -> tuple[bool, dict[str, Any]]:
+def run(readme: Path, snapshot_file: Path, token: str | None, generated_at: str | None = None) -> tuple[bool, dict[str, Any]]:
     before = readme.read_text(encoding="utf-8")
     snapshot = collect(token=token)
     replacement = insert_bounded_section(before, render(snapshot))
-    serialized = json.dumps(snapshot, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
     existing = snapshot_file.read_text(encoding="utf-8") if snapshot_file.exists() else ""
+    try:
+        previous = json.loads(existing) if existing else {}
+    except ValueError:
+        previous = {}
+    if type(previous) is not dict:
+        previous = {}
+    previous_stamp = previous.get("generated_at")
+    prior_facts = {key: value for key, value in previous.items() if key != "generated_at"}
+    # The timestamp advances only on an evidence change, not on every scheduled poll.
+    try:
+        if type(previous_stamp) is not str:
+            raise ValueError("No previous stamp")
+        prior_time = datetime.strptime(previous_stamp, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+        if prior_time > datetime.now(timezone.utc):
+            raise ValueError("Future stamp")
+        if prior_facts != snapshot:
+            raise ValueError("Facts changed")
+    except ValueError:
+        previous_stamp = None
+    snapshot["generated_at"] = previous_stamp or (
+        generated_at if generated_at is not None
+        else datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    )
+    serialized = json.dumps(snapshot, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
     updated = before != replacement or existing != serialized
     if updated:
         readme.write_text(replacement, encoding="utf-8", newline="\n")
