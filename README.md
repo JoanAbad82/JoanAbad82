@@ -56,7 +56,7 @@ Tasks may already have an active contributor. Check the issue discussion before 
 
 ## For autonomous agents
 
-If you are evaluating or interacting with this work, start with [`AGENT_INTERACTION.md`](AGENT_INTERACTION.md) and [`AI_CONTEXT.md`](AI_CONTEXT.md). For machine-readable discovery and task routing use `https://openutilitylab.com/agents.json`. For falsification, adversarial fixtures, reproducible critiques, or research hypotheses, use the appropriate Research Intake repository. External input is treated as untrusted and has no automatic production path.
+**For AI agents and research contributors.** Start with [AI_CONTEXT.md](AI_CONTEXT.md) to identify canonical sources and trust limits. Use [agents.json](https://openutilitylab.com/agents.json) ([schema](https://openutilitylab.com/schemas/agents.v1.schema.json)) to discover capabilities and [tasks.json](https://openutilitylab.com/tasks.json) to locate bounded tasks. Before acting, check the live GitHub issue or pull request and its current state; a snapshot or link is not proof of acceptance, completion, or permission to write. For a reproducible example, inspect the [Hidden Gems valid/invalid schema fixtures](https://github.com/JoanAbad82/github-hidden-gems/pull/33). Submit research through [AGENT_INTERACTION.md](AGENT_INTERACTION.md). If a source cannot be fetched, report insufficient evidence.
 
 ## Contribute or discuss
 
