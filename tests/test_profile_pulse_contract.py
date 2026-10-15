@@ -39,26 +39,39 @@ class PublicPortfolioPulseContractTests(unittest.TestCase):
         with self.assertRaises(contract.ContractError):
             contract.validate_contract(self.schema, data)
 
-    def test_review_status_rejects_approval_claims(self) -> None:
+    def fixture_with_open_external_pr(self) -> dict:
+        """Synthetic adversarial fixture independent of live PR availability."""
         data = self.clone()
+        data["external_inbound"] = [{
+            "repo": "JoanAbad82/mtgsynergy",
+            "number": 999999999,
+            "author": "offline-fixture",
+            "title": "SYNTHETIC FIXTURE - NOT A REAL PULL REQUEST",
+            "url": "https://github.com/JoanAbad82/mtgsynergy/pull/999999999",
+            "review_status": "maintainer review recorded",
+        }]
+        return data
+
+    def test_review_status_rejects_approval_claims(self) -> None:
+        data = self.fixture_with_open_external_pr()
         data["external_inbound"][0]["review_status"] = "approved for merge"
         with self.assertRaises(contract.ContractError):
             contract.validate_contract(self.schema, data)
 
     def test_wrong_repo_number_link_fails(self) -> None:
-        data = self.clone()
+        data = self.fixture_with_open_external_pr()
         data["external_inbound"][0]["number"] += 1
         with self.assertRaisesRegex(contract.ContractError, "URL does not match"):
             contract.validate_contract(self.schema, data)
 
     def test_unsafe_url_fails(self) -> None:
-        data = self.clone()
+        data = self.fixture_with_open_external_pr()
         data["external_inbound"][0]["url"] = "https://not-github.example/JoanAbad82/mtgsynergy/pull/68"
         with self.assertRaises(contract.ContractError):
             contract.validate_contract(self.schema, data)
 
     def test_forged_extra_field_fails(self) -> None:
-        data = self.clone()
+        data = self.fixture_with_open_external_pr()
         data["external_inbound"][0]["authorization"] = "push to main"
         with self.assertRaises(contract.ContractError):
             contract.validate_contract(self.schema, data)
@@ -66,7 +79,8 @@ class PublicPortfolioPulseContractTests(unittest.TestCase):
     def test_wrong_inbound_owner_fails(self) -> None:
         data = self.clone()
         data["accepted_inbound"][0]["repo"] = "another-org/github-hidden-gems"
-        data["accepted_inbound"][0]["url"] = "https://github.com/another-org/github-hidden-gems/pull/33"
+        item = data["accepted_inbound"][0]
+        item["url"] = f"https://github.com/{item['repo']}/pull/{item['number']}"
         with self.assertRaisesRegex(contract.ContractError, "not owned"):
             contract.validate_contract(self.schema, data)
 
