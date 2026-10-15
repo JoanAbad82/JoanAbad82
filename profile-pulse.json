@@ -2,6 +2,13 @@
   "$schema": "https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/schemas/profile-pulse.schema.json",
   "accepted_inbound": [
     {
+      "author": "jay23606",
+      "number": 68,
+      "repo": "JoanAbad82/mtgsynergy",
+      "title": "test: cover cards-index verifier with isolated fixtures",
+      "url": "https://github.com/JoanAbad82/mtgsynergy/pull/68"
+    },
+    {
       "author": "CRYPTONIKAV",
       "number": 33,
       "repo": "JoanAbad82/github-hidden-gems",
@@ -34,16 +41,7 @@
       "url": "https://github.com/JoanAbad82/repasactiu-research-intake/issues/1"
     }
   ],
-  "external_inbound": [
-    {
-      "author": "jay23606",
-      "number": 68,
-      "repo": "JoanAbad82/mtgsynergy",
-      "review_status": "maintainer review recorded",
-      "title": "test: cover cards-index verifier with isolated fixtures",
-      "url": "https://github.com/JoanAbad82/mtgsynergy/pull/68"
-    }
-  ],
-  "generated_at": "2026-10-14T12:55:24Z",
+  "external_inbound": [],
+  "generated_at": "2026-10-15T07:59:28Z",
   "schema": "GITHUB_PORTFOLIO_PULSE_V1"
 }

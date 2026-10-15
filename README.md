@@ -18,11 +18,12 @@ It does not represent visitor counts, paid promotion, or an endorsement of unrev
 
 **Merged community contributions**
 
+- [JoanAbad82/mtgsynergy #68: test: cover cards-index verifier with isolated fixtures (by jay23606; **merged**)](https://github.com/JoanAbad82/mtgsynergy/pull/68)
 - [JoanAbad82/github-hidden-gems #33: Add valid/invalid fixtures for RUN\_CANDIDATES\_V1 schema (by CRYPTONIKAV; **merged**)](https://github.com/JoanAbad82/github-hidden-gems/pull/33)
 
 **Open community pull requests**
 
-- [JoanAbad82/mtgsynergy #68: test: cover cards-index verifier with isolated fixtures (by jay23606; **maintainer review recorded**)](https://github.com/JoanAbad82/mtgsynergy/pull/68)
+- No verified public entries currently available.
 
 **Starter tasks open to contributors**
 
