@@ -1,6 +1,8 @@
 name: Portfolio Pulse | verified GitHub activity
 
 on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
   schedule:
     - cron: "23 7 * * *"
   workflow_dispatch:
@@ -14,15 +16,47 @@ on:
       - "tests/test_profile_pulse_contract.py"
       - ".github/workflows/portfolio-pulse.yml"
 
+# PR verification is read-only; only main's publisher may write.
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: portfolio-pulse-main
   cancel-in-progress: false
 
 jobs:
+  validate-pr:
+    # Non-main workflow_dispatch permits safe bootstrap CI before merge.
+    if: ${{ github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/main') }}
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout PR for read-only validation
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python for JSON Schema validation
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install pinned JSON Schema validator
+        run: python -m pip install --disable-pip-version-check "jsonschema==4.25.1"
+
+      - name: Validate with offline security and schema tests
+        run: python -m unittest discover -s tests -p "test_*.py" -v
+
+      - name: Validate existing snapshot and discovery links
+        run: python scripts/validate_profile_pulse.py --root .
+
   curate-profile:
+    # No writes from PRs or manual branch validation.
+    if: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
