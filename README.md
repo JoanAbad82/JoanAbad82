@@ -95,6 +95,8 @@ Repository-local documentation remains authoritative for implementation details.
 
 Interested in roles or collaborations around **automation, data analysis, security tooling, explainable systems, and practical software engineering**.
 
+**Professional projects:** [Services, verified work and delivery approach](https://openutilitylab.com/ai-assisted-work/) · [Discuss a scoped project by email](mailto:abadbatallajoan@gmail.com?subject=GitHub%20profile%20-%20scoped%20project%20inquiry).
+
 [Connect on LinkedIn](https://www.linkedin.com/in/joan-abad-batalla-b27042331/)
 
 ## Links
