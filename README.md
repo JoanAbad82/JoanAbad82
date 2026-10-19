@@ -6,6 +6,8 @@ I build reproducible software systems for **automation, evidence-driven analysis
 
 My projects favor deterministic behavior, explicit uncertainty, machine-readable evidence, inspectable workflows, and local/client-side execution where it improves privacy or simplicity.
 
+**Professional projects:** [Services, verified work and delivery approach](https://openutilitylab.com/ai-assisted-work/) · [Discuss a scoped project by email](mailto:abadbatallajoan@gmail.com?subject=GitHub%20profile%20-%20scoped%20project%20inquiry).
+
 <!-- portfolio-pulse:start -->
 ## Verified collaboration and contribution opportunities
 
@@ -99,8 +101,6 @@ Repository-local documentation remains authoritative for implementation details.
 ## Open to opportunities
 
 Interested in roles or collaborations around **automation, data analysis, security tooling, explainable systems, and practical software engineering**.
-
-**Professional projects:** [Services, verified work and delivery approach](https://openutilitylab.com/ai-assisted-work/) · [Discuss a scoped project by email](mailto:abadbatallajoan@gmail.com?subject=GitHub%20profile%20-%20scoped%20project%20inquiry).
 
 [Connect on LinkedIn](https://www.linkedin.com/in/joan-abad-batalla-b27042331/)
 
