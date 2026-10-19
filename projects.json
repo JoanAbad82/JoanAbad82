@@ -256,7 +256,9 @@
     {
       "repository": "JoanAbad82/affiliate-friction-auditor",
       "role": "affiliate-friction-audit-toolkit",
-      "status": "early-public-toolkit",
+      "status": "reference-implementation",
+      "commercial_priority": false,
+      "retrospective_url": "https://github.com/JoanAbad82/affiliate-friction-auditor/blob/main/docs/PROJECT_RETROSPECTIVE.md",
       "language": "Python",
       "license": "Apache-2.0",
       "live_url": "https://openutilitylab.com/affiliate-friction-auditor/",

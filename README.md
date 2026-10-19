@@ -46,6 +46,10 @@ Tasks may already have an active contributor. Check the issue discussion before 
 | **Repàs Actiu** | Bilingual Catalan/Spanish study platform with validated quizzes, flashcards, and source traceability. | JavaScript · Cloudflare Pages | tests · traceability manifests · content validators | [Live](https://repasactiu.pages.dev/) · [Code](https://github.com/JoanAbad82/repasactiu) |
 | **Programación Práctica** | Practical Python/PowerShell learning platform with concept-level progress and reproducible study sessions. | TypeScript · Next.js · Playwright | JSON Schemas · manifests · QA inventories | [Live](https://programacion-practica.pages.dev/) · [Code](https://github.com/JoanAbad82/programacion-practica) |
 
+## Earlier engineering work
+
+- **[Affiliate Friction Auditor](https://github.com/JoanAbad82/affiliate-friction-auditor)** — an early AI-assisted engineering project kept as a functional, deterministic reference; no longer a commercial priority. [Read the retrospective](https://github.com/JoanAbad82/affiliate-friction-auditor/blob/main/docs/PROJECT_RETROSPECTIVE.md).
+
 ## How I work
 
 - Separate evidence, assumptions, and conclusions.

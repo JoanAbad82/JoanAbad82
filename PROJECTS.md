@@ -11,7 +11,7 @@ This file is the canonical profile-level map of Joan Abad's public GitHub work. 
 | `mtgsynergy` | Explainable MTG semantic/structural analysis | Active / released | `README.md` + current source/tests |
 | `repasactiu` | Bilingual study platform | Active / live | `README.md` + source-traceability data |
 | `programacion-practica` | Programming learning platform | Active / released | `README.md` + `AGENTS.md` + schemas/manifests |
-| `affiliate-friction-auditor` | Affiliate-friction audit toolkit | Early public toolkit | `README.md` + tests/examples |
+| `affiliate-friction-auditor` | Earlier AI-assisted affiliate-friction reference implementation | Reference / no commercial priority | `README.md` + `docs/PROJECT_RETROSPECTIVE.md` + tests/examples |
 | `github-hidden-gems-research-intake` | External research intake | Research-only | `README.md` + research boundaries |
 | `repasactiu-research-intake` | Applied educational-validation intake | Research-only | `README.md` + positioning/boundaries |
 | `JoanAbad82` | GitHub profile metadata | Profile | `README.md` + `projects.json` |
