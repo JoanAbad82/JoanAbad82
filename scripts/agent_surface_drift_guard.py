@@ -487,7 +487,6 @@ def main() -> int:
         str(task_index_schema_url),
         "https://github.com/JoanAbad82/github-hidden-gems/blob/main/.github/agents/evidence-auditor.agent.md",
         "https://raw.githubusercontent.com/JoanAbad82/github-hidden-gems-research-intake/main/AGENT_TASKS.json",
-        "https://raw.githubusercontent.com/JoanAbad82/repasactiu-research-intake/main/AGENT_TASKS.json",
     ]:
         require(needle in repo_llms, f"llms.txt missing canonical link: {needle}", errors)
 

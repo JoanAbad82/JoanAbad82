@@ -173,50 +173,6 @@
       ]
     },
     {
-      "repository": "JoanAbad82/repasactiu",
-      "role": "bilingual-study-platform",
-      "status": "active-live",
-      "language": "JavaScript",
-      "license": "mixed-scope",
-      "live_url": "https://repasactiu.pages.dev/",
-      "canonical_entry": [
-        "README.md",
-        "PROJECT_STATUS.json",
-        "AGENTS.md",
-        "LICENSE"
-      ],
-      "verification": [
-        "tests",
-        "source-traceability manifests",
-        "GitHub Actions"
-      ],
-      "research_surface": "JoanAbad82/repasactiu-research-intake",
-      "license_scope": {
-        "software": "Apache-2.0",
-        "educational_content": "separate rights boundary; see repository LICENSE"
-      },
-      "interaction": {
-        "accepts_external_hypotheses": true,
-        "agent_entrypoint": "JoanAbad82/repasactiu-research-intake",
-        "preferred_submission": "github_issue",
-        "production_write_access": false,
-        "open_challenges_url": "https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready",
-        "task_contract_ref": "https://raw.githubusercontent.com/JoanAbad82/repasactiu-research-intake/main/AGENT_TASKS.json"
-      },
-      "native_agent_surface": {
-        "copilot_instructions": ".github/copilot-instructions.md",
-        "path_instructions": [
-          ".github/instructions/content-traceability.instructions.md",
-          ".github/instructions/app-validation.instructions.md"
-        ]
-      },
-      "capabilities": [
-        "content-validation",
-        "source-traceability",
-        "learning-software"
-      ]
-    },
-    {
       "repository": "JoanAbad82/programacion-practica",
       "role": "programming-learning-platform",
       "status": "active-released",
@@ -324,39 +280,6 @@
       ]
     },
     {
-      "repository": "JoanAbad82/repasactiu-research-intake",
-      "role": "research-intake",
-      "status": "research-only",
-      "license": "Apache-2.0",
-      "canonical_entry": [
-        "README.md",
-        "AGENTS.md",
-        "POSITIONING.md",
-        "CONTRIBUTING.md",
-        "PROJECT_STATUS.json",
-        "AGENT_TASKS.json"
-      ],
-      "production_path": "none-automatic",
-      "interaction": {
-        "accepts_external_hypotheses": true,
-        "preferred_submission": "github_issue",
-        "production_write_access": false,
-        "automatic_promotion": false,
-        "open_challenges_url": "https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready",
-        "task_contract_ref": "https://raw.githubusercontent.com/JoanAbad82/repasactiu-research-intake/main/AGENT_TASKS.json"
-      },
-      "native_agent_surface": {
-        "copilot_instructions": ".github/copilot-instructions.md",
-        "agent_tasks": "AGENT_TASKS.json"
-      },
-      "capabilities": [
-        "falsification",
-        "adversarial-fixture",
-        "ambiguity-test",
-        "validator-hypothesis"
-      ]
-    },
-    {
       "repository": "JoanAbad82/m2m-evidence-router-showcase",
       "role": "m2m-public-discovery-and-controlled-pilot-intake",
       "status": "public-preview-no-self-service-payments",
@@ -430,25 +353,16 @@
       "JoanAbad82/affiliate-friction-auditor"
     ],
     "falsification": [
-      "JoanAbad82/github-hidden-gems-research-intake",
-      "JoanAbad82/repasactiu-research-intake"
+      "JoanAbad82/github-hidden-gems-research-intake"
     ],
     "adversarial-fixture": [
-      "JoanAbad82/github-hidden-gems-research-intake",
-      "JoanAbad82/repasactiu-research-intake"
+      "JoanAbad82/github-hidden-gems-research-intake"
     ],
     "independent-reproduction": [
       "JoanAbad82/github-hidden-gems-research-intake"
     ],
     "evidence-boundary-review": [
       "JoanAbad82/github-hidden-gems-research-intake"
-    ],
-    "content-validation": [
-      "JoanAbad82/repasactiu",
-      "JoanAbad82/repasactiu-research-intake"
-    ],
-    "source-traceability": [
-      "JoanAbad82/repasactiu"
     ],
     "windows-security-audit": [
       "JoanAbad82/master-security-review"
@@ -457,7 +371,6 @@
       "JoanAbad82/mtgsynergy"
     ],
     "learning-software": [
-      "JoanAbad82/repasactiu",
       "JoanAbad82/programacion-practica"
     ],
     "public-agent-routing": [

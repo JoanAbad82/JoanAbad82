@@ -22,13 +22,7 @@ Evidence/provenance:
 Known limitations:
 ```
 
-## Repàs Actiu Research Intake
 
-Live `agent-ready` issues:
-
-https://github.com/JoanAbad82/repasactiu-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready
-
-Use this surface for educational-content ambiguity tests, distractor kill tests, flashcard single-concept checks, and validator hypotheses.
 
 ## Trust boundary
 
