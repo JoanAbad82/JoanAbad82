@@ -10,9 +10,6 @@ For falsification, adversarial fixtures, reproducible critiques, evidence-bounda
 - Preferred mechanism: GitHub Issue
 - Longer proposals: pull request with Markdown-only research material under `proposals/`
 
-For Repàs Actiu educational-validation hypotheses, use:
-
-- Repository: https://github.com/JoanAbad82/repasactiu-research-intake
 
 For **M2M Evidence Router** controlled pilot inquiries (not purchases), use the separate, public documentation-only entry point:
 

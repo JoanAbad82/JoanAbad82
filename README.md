@@ -30,7 +30,6 @@ It does not represent visitor counts, paid promotion, or an endorsement of unrev
 **Starter tasks open to contributors**
 
 - [JoanAbad82/master-security-review #10: Add CITATION.cff for canonical project citation](https://github.com/JoanAbad82/master-security-review/issues/10)
-- [JoanAbad82/repasactiu-research-intake #1: question-ambiguity-killtest-v1 — break the one-correct-answer assumption](https://github.com/JoanAbad82/repasactiu-research-intake/issues/1)
 
 Tasks may already have an active contributor. Check the issue discussion before starting.
 <!-- portfolio-pulse:end -->
@@ -45,7 +44,6 @@ Tasks may already have an active contributor. Check the issue discussion before 
 | **SpectralCode (formerly CarryDecoder)** | Experimental research exploring persistent structure in incomplete or noisy signals and latent-state reconstruction; implementation remains private. | Signal analysis · research | Public project overview only; no source code or independently validated results offered here | [Overview](https://openutilitylab.com/spectralcode/) |
 | **Master Security Review** | Windows first-pass security audit utility with structured, safer-to-share reports. | C# · Windows | release · SHA-256 · reproducible build · provenance attestation | [Code](https://github.com/JoanAbad82/master-security-review) · [Releases](https://github.com/JoanAbad82/master-security-review/releases) |
 | **MTGSynergy** | Explainable Magic: The Gathering deck and card-synergy analysis using deterministic rules and semantic models. | TypeScript · Astro · Preact | tests · schemas · manifests · releases | [Live](https://mtgsynergy.com/) · [Code](https://github.com/JoanAbad82/mtgsynergy) |
-| **Repàs Actiu** | Bilingual Catalan/Spanish study platform with validated quizzes, flashcards, and source traceability. | JavaScript · Cloudflare Pages | tests · traceability manifests · content validators | [Live](https://repasactiu.pages.dev/) · [Code](https://github.com/JoanAbad82/repasactiu) |
 | **Programación Práctica** | Practical Python/PowerShell learning platform with concept-level progress and reproducible study sessions. | TypeScript · Next.js · Playwright | JSON Schemas · manifests · QA inventories | [Live](https://programacion-practica.pages.dev/) · [Code](https://github.com/JoanAbad82/programacion-practica) |
 
 ## Earlier engineering work
@@ -69,7 +67,6 @@ Tasks may already have an active contributor. Check the issue discussion before 
 
 - [GitHub Hidden Gems Discussions](https://github.com/JoanAbad82/github-hidden-gems/discussions) — questions and ideas about discovery, evidence boundaries, reproducibility, and experiments.
 - [Open Research Intake challenges](https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready) — live agent-ready research issues; verify each task is available before starting.
-- [Repàs Actiu ambiguity kill test](https://github.com/JoanAbad82/repasactiu-research-intake/issues/1) — a bounded educational-validation task.
 - Account-wide contribution, security, issue, and pull-request defaults live in [`JoanAbad82/.github`](https://github.com/JoanAbad82/.github).
 
 ## Research surfaces
@@ -78,7 +75,6 @@ External hypotheses and adversarial cases are intentionally separated from produ
 
 - [Engineering & Research Roadmap](https://github.com/users/JoanAbad82/projects/1) — public cross-project view of real research and validation work.
 - [GitHub Hidden Gems Research Intake](https://github.com/JoanAbad82/github-hidden-gems-research-intake)
-- [Repàs Actiu Research Intake](https://github.com/JoanAbad82/repasactiu-research-intake)
 
 The roadmap tracks existing work only; these research repositories do not provide an automatic promotion path into production.
 
