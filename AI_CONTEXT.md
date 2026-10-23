@@ -39,7 +39,7 @@ Autonomous agents and external research contributors should use `AGENT_INTERACTI
 
 ## Project index
 
-Machine-readable project metadata is available in `projects.json`. A human-readable map is available in `PROJECTS.md`.
+`projects.json` and `PROJECTS.md` are curated public project indexes, **not complete account inventories**; absence from either is not evidence that a repository does not exist. `https://openutilitylab.com/agents.json` is a smaller actionable agent-routing subset, not a third full inventory. Repository-local canonical sources decide actual project status.
 
 ## Public collaboration evidence
 

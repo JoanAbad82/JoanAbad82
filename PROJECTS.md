@@ -1,6 +1,6 @@
 # Project map
 
-This file is the canonical profile-level map of Joan Abad's public GitHub work. It describes project roles and boundaries; each repository's own documentation is authoritative for implementation details.
+This is a **curated, non-exhaustive** profile-level map of public project entry points and their trust boundaries, not an inventory of all owned repositories or forks. Each repository's own documentation remains authoritative for implementation details. Private research and client work are omitted by default.
 
 | Repository | Role | Status | Canonical entry point |
 |---|---|---|---|
