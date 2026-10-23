@@ -16,6 +16,7 @@ It does not represent visitor counts, paid promotion, or an endorsement of unrev
 
 **Accepted upstream contributions**
 
+- [bpftrace/bpftrace #5398: tests: verify Rust function entry via uprobe](https://github.com/bpftrace/bpftrace/pull/5398)
 - [pic-standard/pic-standard #182: docs: walkthrough for valid and tampered Ed25519 evidence](https://github.com/pic-standard/pic-standard/pull/182)
 
 **Merged community contributions**
