@@ -8,6 +8,8 @@ My projects favor deterministic behavior, explicit uncertainty, machine-readable
 
 **Professional projects:** [Services, verified work and delivery approach](https://openutilitylab.com/ai-assisted-work/) · [Discuss a scoped project by email](mailto:abadbatallajoan@gmail.com?subject=GitHub%20profile%20-%20scoped%20project%20inquiry).
 
+**Quick navigation:** [Projects](#selected-work) · [Verified contributions](#verified-collaboration-and-contribution-opportunities) · [How I work](#how-i-work) · [For AI agents](#for-autonomous-agents).
+
 <!-- portfolio-pulse:start -->
 ## Verified collaboration and contribution opportunities
 
