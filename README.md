@@ -18,9 +18,9 @@ It does not represent visitor counts, paid promotion, or an endorsement of unrev
 
 **Accepted upstream contributions**
 
+- [ishandutta2007/Top-AI-repos #47: fix: return nonzero status on table mismatches](https://github.com/ishandutta2007/Top-AI-repos/pull/47)
 - [StellarDevTools/stellar-devkit #87: fix\(action\): validate Doctor boolean inputs strictly](https://github.com/StellarDevTools/stellar-devkit/pull/87)
 - [bpftrace/bpftrace #5398: tests: verify Rust function entry via uprobe](https://github.com/bpftrace/bpftrace/pull/5398)
-- [pic-standard/pic-standard #182: docs: walkthrough for valid and tampered Ed25519 evidence](https://github.com/pic-standard/pic-standard/pull/182)
 
 **Merged community contributions**
 
