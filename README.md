@@ -18,9 +18,9 @@ It does not represent visitor counts, paid promotion, or an endorsement of unrev
 
 **Accepted upstream contributions**
 
+- [rakeshnitb23/toolism #164: docs: explain which tool fields are counted](https://github.com/rakeshnitb23/toolism/pull/164)
 - [ishandutta2007/Top-AI-repos #47: fix: return nonzero status on table mismatches](https://github.com/ishandutta2007/Top-AI-repos/pull/47)
 - [StellarDevTools/stellar-devkit #87: fix\(action\): validate Doctor boolean inputs strictly](https://github.com/StellarDevTools/stellar-devkit/pull/87)
-- [bpftrace/bpftrace #5398: tests: verify Rust function entry via uprobe](https://github.com/bpftrace/bpftrace/pull/5398)
 
 **Merged community contributions**
 
