@@ -5,7 +5,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+import tempfile
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
@@ -43,7 +45,13 @@ def fetch_text(url: str, timeout: int = 20) -> str:
     except urllib.error.HTTPError as exc:
         raise DriftError(f"HTTP {exc.code} for {url}") from exc
     except urllib.error.URLError as exc:
+        if isinstance(exc.reason, TimeoutError):
+            raise DriftError(f"Timeout for {url}: {exc.reason}") from exc
         raise DriftError(f"URL error for {url}: {exc.reason}") from exc
+    except TimeoutError as exc:
+        raise DriftError(f"Timeout for {url}: {exc}") from exc
+    except OSError as exc:
+        raise DriftError(f"Network I/O error for {url}: {exc}") from exc
 
 
 def fetch_json(url: str) -> dict[str, Any]:
@@ -117,17 +125,9 @@ def normalize_text(value: str) -> str:
     return value.replace("\r\n", "\n").replace("\r", "\n").rstrip() + "\n"
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--profile-root", default=".", help="Local checkout of JoanAbad82 profile repo")
-    parser.add_argument("--json-report", default="", help="Optional report path")
-    args = parser.parse_args()
-
-    root = Path(args.profile_root).resolve()
-    errors: list[str] = []
-    warnings: list[str] = []
-    checks: list[str] = []
-
+def _run_checks(
+    root: Path, errors: list[str], warnings: list[str], checks: list[str]
+) -> None:
     projects = load_json(root / "projects.json")
     schema = load_json(root / "schemas" / "agent-task-contract.schema.json")
     task_index_schema = load_json(root / "schemas" / "agent-task-index.schema.json")
@@ -490,6 +490,41 @@ def main() -> int:
     ]:
         require(needle in repo_llms, f"llms.txt missing canonical link: {needle}", errors)
 
+def _write_report_atomically(path: Path, report: dict[str, Any]) -> None:
+    """Persist complete JSON on success or failure; replace only after fsync."""
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", newline="\n",
+            prefix=f".{path.name}.", suffix=".tmp", dir=path.parent,
+            delete=False,
+        ) as handle:
+            temporary = Path(handle.name)
+            handle.write(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--profile-root", default=".", help="Local checkout of JoanAbad82 profile repo")
+    parser.add_argument("--json-report", default="", help="Optional report path")
+    args = parser.parse_args()
+
+    root = Path(args.profile_root).resolve()
+    errors: list[str] = []
+    warnings: list[str] = []
+    checks: list[str] = []
+    try:
+        _run_checks(root, errors, warnings, checks)
+    except Exception as exc:
+        # Never emit PASS or lose the report after an unexpected validation error.
+        errors.append(f"Validation interrupted ({type(exc).__name__}): {exc}")
+
     report = {
         "schema_version": "1.0",
         "checked_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -501,10 +536,7 @@ def main() -> int:
     }
 
     if args.json_report:
-        Path(args.json_report).write_text(
-            json.dumps(report, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
-        )
+        _write_report_atomically(Path(args.json_report), report)
 
     print(f"DRIFT_GUARD={report['status']}")
     print(f"CHECKS_COMPLETED={len(checks)}")
