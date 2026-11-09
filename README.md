@@ -18,9 +18,9 @@ It does not represent visitor counts, paid promotion, or an endorsement of unrev
 
 **Accepted upstream contributions**
 
+- [maths/moodle-qtype\_stack #1954: docs\(api\): clarify test-result interpretation for automated STACK authors](https://github.com/maths/moodle-qtype_stack/pull/1954)
 - [rakeshnitb23/toolism #164: docs: explain which tool fields are counted](https://github.com/rakeshnitb23/toolism/pull/164)
 - [ishandutta2007/Top-AI-repos #47: fix: return nonzero status on table mismatches](https://github.com/ishandutta2007/Top-AI-repos/pull/47)
-- [StellarDevTools/stellar-devkit #87: fix\(action\): validate Doctor boolean inputs strictly](https://github.com/StellarDevTools/stellar-devkit/pull/87)
 
 **Merged community contributions**
 
