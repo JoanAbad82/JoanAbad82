@@ -136,6 +136,85 @@ class PortfolioPulseTests(unittest.TestCase):
         two=json.dumps(self.snapshot(),sort_keys=True,ensure_ascii=False)
         self.assertEqual(one,two)
         self.assertNotIn("fetched_at",one)
+
+    def test_five_recent_upstream_merged_prs_are_deduped_and_sorted(self):
+        specs = [
+            ("maths", "moodle-qtype_stack", 1954, "2026-11-09T16:11:41Z"),
+            ("rakeshnitb23", "toolism", 164, "2026-11-07T11:07:41Z"),
+            ("ishandutta2007", "Top-AI-repos", 47, "2026-11-05T14:24:54Z"),
+            ("StellarDevTools", "stellar-devkit", 87, "2026-11-03T06:59:36Z"),
+            ("bpftrace", "bpftrace", 5398, "2026-10-22T21:04:13Z"),
+            ("pic-standard", "pic-standard", 182, "2026-10-10T13:49:37Z"),
+        ]
+        items = []
+        for owner, repo, number, merged_at in specs:
+            entry = issue(owner, repo, number, "pull", "JoanAbad82", "closed",
+                          f"Verified upstream contribution {number}")
+            entry["pull_request"]["merged_at"] = merged_at
+            items.append(entry)
+        # GitHub search is ordered by updated_at, which need not be merged_at.
+        # The sixth (older) PR and duplicate must not displace newer merges.
+        scrambled = [items[i] for i in (4, 0, 5, 3, 1, 2, 0)]
+        expected = [
+            "https://github.com/maths/moodle-qtype_stack/pull/1954",
+            "https://github.com/rakeshnitb23/toolism/pull/164",
+            "https://github.com/ishandutta2007/Top-AI-repos/pull/47",
+            "https://github.com/StellarDevTools/stellar-devkit/pull/87",
+            "https://github.com/bpftrace/bpftrace/pull/5398",
+        ]
+        a = pulse.collect(fetch=fetch_for(accepted=scrambled))
+        self.assertEqual([row["url"] for row in a["accepted_upstream"]], expected)
+        b = pulse.collect(fetch=fetch_for(accepted=list(reversed(scrambled))))
+        self.assertEqual(a["accepted_upstream"], b["accepted_upstream"])
+        rendered = pulse.render(a)
+        self.assertEqual(rendered.count("StellarDevTools/stellar-devkit #87"), 1)
+        self.assertEqual(rendered.count("bpftrace/bpftrace #5398"), 1)
+        self.assertNotIn("pic-standard #182", rendered)
+
+    def test_upstream_merge_timestamp_is_strictly_validated(self):
+        malformed = issue("StellarDevTools", "stellar-devkit", 87, "pull",
+                          "JoanAbad82", "closed")
+        for invalid in ("2026-02-31T00:00:00Z", "2026-11-03T06:59:36+02:00",
+                        "invalid", 999):
+            with self.subTest(value=invalid):
+                malformed["pull_request"]["merged_at"] = invalid
+                got = pulse.collect(fetch=fetch_for(accepted=[malformed]))
+                self.assertEqual(got["accepted_upstream"], [])
+
+    def test_upstream_sort_ties_have_stable_url_order(self):
+        older = issue("ExampleOrg", "alpha", 4, "pull", "JoanAbad82", "closed")
+        newer = issue("ExampleOrg", "zeta", 9, "pull", "JoanAbad82", "closed")
+        older["pull_request"]["merged_at"] = "2026-11-03T06:59:36Z"
+        newer["pull_request"]["merged_at"] = "2026-11-03T06:59:36Z"
+        first = pulse.collect(fetch=fetch_for(accepted=[older, newer]))
+        second = pulse.collect(fetch=fetch_for(accepted=[newer, older]))
+        self.assertEqual(first["accepted_upstream"], second["accepted_upstream"])
+        self.assertEqual([x["number"] for x in first["accepted_upstream"]], [9, 4])
+
+    def test_only_accepted_upstream_limit_changes(self):
+        self.assertEqual(
+            pulse.LIMITS,
+            {"accepted_upstream": 5, "accepted_inbound": 3,
+             "external_inbound": 3, "contribution_tasks": 4},
+        )
+
+    def test_truncated_upstream_search_fails_closed(self):
+        upstream = issue("StellarDevTools", "stellar-devkit", 87,
+                         "pull", "JoanAbad82", "closed")
+        delegate = fetch_for(accepted=[upstream])
+
+        def truncated(url, token):
+            result = delegate(url, token)
+            if url.startswith("/search/issues?"):
+                from urllib.parse import parse_qs
+                query = parse_qs(url.split("?", 1)[1])["q"][0]
+                if query == pulse.SEARCH["accepted_upstream"]:
+                    result["total_count"] = 101
+            return result
+
+        with self.assertRaisesRegex(pulse.CuratorError, "Truncated accepted upstream search"):
+            pulse.collect(fetch=truncated)
+
     def test_api_call_allowlist(self):
         with self.assertRaises(pulse.CuratorError):
             pulse.github_get("/user/repos",None)

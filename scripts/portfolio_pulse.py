@@ -35,7 +35,7 @@ SEARCH = {
     "external_inbound": "is:pr is:open user:JoanAbad82 -author:JoanAbad82",
     "contribution_tasks": 'is:issue is:open user:JoanAbad82 label:"good first issue" -linked:pr',
 }
-LIMITS = {"accepted_upstream": 3, "accepted_inbound": 3, "external_inbound": 3, "contribution_tasks": 4}
+LIMITS = {"accepted_upstream": 5, "accepted_inbound": 3, "external_inbound": 3, "contribution_tasks": 4}
 
 
 class CuratorError(RuntimeError):
@@ -117,6 +117,15 @@ def parse_issue(item: dict[str, Any], kind: str) -> dict[str, Any] | None:
         pull = item.get("pull_request")
         if item.get("state") != "closed" or type(pull) is not dict or not pull.get("merged_at"):
             return None
+    if kind == "accepted_upstream":
+        # GitHub search is sorted by update time; ranking requires a valid merge time.
+        stamp = pull.get("merged_at")
+        if type(stamp) is not str:
+            return None
+        try:
+            datetime.strptime(stamp, "%Y-%m-%dT%H:%M:%SZ")
+        except ValueError:
+            return None
     if kind == "contribution_tasks" and item.get("state") != "open":
         return None
     if kind == "external_inbound" and item.get("state") != "open":
@@ -145,6 +154,19 @@ def public_repo(full_name: str, token: str | None, cache: dict[str, bool]) -> bo
     return cache[full_name]
 
 
+def upstream_merge_sort_key(item: Any) -> tuple[str, str]:
+    """Canonical UTC merge timestamp followed by URL for deterministic ties."""
+    if type(item) is not dict:
+        return ("", "")
+    pull = item.get("pull_request")
+    timestamp = pull.get("merged_at") if type(pull) is dict else None
+    url = item.get("html_url")
+    return (
+        timestamp if type(timestamp) is str else "",
+        url if type(url) is str else "",
+    )
+
+
 def collect(fetch=github_get, token: str | None = None) -> dict[str, Any]:
     # Inject fetch in tests. Runtime requests only use the allowlisted GET client.
     def search(query: str) -> list[dict[str, Any]]:
@@ -154,6 +176,11 @@ def collect(fetch=github_get, token: str | None = None) -> dict[str, Any]:
         obj = fetch(url, token)
         if type(obj) is not dict or obj.get("incomplete_results") is True or type(obj.get("items")) is not list:
             raise CuratorError("Incomplete or invalid GitHub search")
+        if query == SEARCH["accepted_upstream"] and (
+            type(obj.get("total_count")) is int
+            and obj["total_count"] > len(obj["items"])
+        ):
+            raise CuratorError("Truncated accepted upstream search")
         return obj["items"]
     cache: dict[str, bool] = {}
     claimed: set[tuple[str, int]] = set()
@@ -161,7 +188,10 @@ def collect(fetch=github_get, token: str | None = None) -> dict[str, Any]:
     for kind, query in SEARCH.items():
         values: list[dict[str, Any]] = []
         seen: set[str] = set()
-        for item in search(query):
+        items = search(query)
+        if kind == "accepted_upstream":
+            items.sort(key=upstream_merge_sort_key, reverse=True)
+        for item in items:
             if type(item) is not dict:
                 continue
             candidate = parse_issue(item, kind)
