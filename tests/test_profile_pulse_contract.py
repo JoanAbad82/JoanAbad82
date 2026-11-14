@@ -114,6 +114,40 @@ class PublicPortfolioPulseContractTests(unittest.TestCase):
         with self.assertRaises(contract.ContractError):
             contract.validate_contract(self.schema, data)
 
+
+    def test_five_upstream_entries_validate_and_six_fail(self) -> None:
+        data = self.clone()
+        self.assertEqual(len(data["accepted_upstream"]), 3)
+        for repo, number, title in (
+            ("StellarDevTools/stellar-devkit", 87, "Strict Doctor inputs"),
+            ("bpftrace/bpftrace", 5398, "Runtime Rust uprobe test"),
+        ):
+            data["accepted_upstream"].append({
+                "repo": repo,
+                "number": number,
+                "title": title,
+                "url": f"https://github.com/{repo}/pull/{number}",
+                "author": "JoanAbad82",
+            })
+        contract.validate_contract(self.schema, data)
+        data["accepted_upstream"].append({
+            "repo": "pic-standard/pic-standard",
+            "number": 182,
+            "title": "Signed evidence example",
+            "url": "https://github.com/pic-standard/pic-standard/pull/182",
+            "author": "JoanAbad82",
+        })
+        with self.assertRaises(contract.ContractError):
+            contract.validate_contract(self.schema, data)
+
+    def test_other_contract_limits_remain_unchanged(self) -> None:
+        props = self.schema["properties"]
+        self.assertEqual(props["accepted_upstream"]["maxItems"], 5)
+        self.assertEqual(props["accepted_inbound"]["maxItems"], 3)
+        self.assertEqual(props["external_inbound"]["maxItems"], 3)
+        self.assertEqual(props["contribution_tasks"]["maxItems"], 4)
+        self.assertEqual(props["schema"]["const"], "GITHUB_PORTFOLIO_PULSE_V1")
+
     def test_missing_discovery_link_fails(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
