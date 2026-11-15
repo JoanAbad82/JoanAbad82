@@ -117,10 +117,14 @@ class PublicPortfolioPulseContractTests(unittest.TestCase):
 
     def test_five_upstream_entries_validate_and_six_fail(self) -> None:
         data = self.clone()
-        self.assertEqual(len(data["accepted_upstream"]), 3)
+        # The boundary fixture must not depend on how many entries are published.
+        data["accepted_upstream"] = []
         for repo, number, title in (
-            ("StellarDevTools/stellar-devkit", 87, "Strict Doctor inputs"),
-            ("bpftrace/bpftrace", 5398, "Runtime Rust uprobe test"),
+            ("aakash1552005/rerunner", 130, "Summary-only cassette audits"),
+            ("pic-standard/pic-standard", 201, "Post-allow MCP tool failures"),
+            ("maths/moodle-qtype_stack", 1954, "STACK test-result interpretation"),
+            ("rakeshnitb23/toolism", 164, "Tool fields counted"),
+            ("ishandutta2007/Top-AI-repos", 47, "Nonzero status on table mismatches"),
         ):
             data["accepted_upstream"].append({
                 "repo": repo,
@@ -129,6 +133,7 @@ class PublicPortfolioPulseContractTests(unittest.TestCase):
                 "url": f"https://github.com/{repo}/pull/{number}",
                 "author": "JoanAbad82",
             })
+        self.assertEqual(len(data["accepted_upstream"]), 5)
         contract.validate_contract(self.schema, data)
         data["accepted_upstream"].append({
             "repo": "pic-standard/pic-standard",
