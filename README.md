@@ -18,11 +18,11 @@ It does not represent visitor counts, paid promotion, or an endorsement of unrev
 
 **Accepted upstream contributions**
 
+- [rakeshnitb23/toolism #185: test\(rules\): cover generated schema invariants \(#147\)](https://github.com/rakeshnitb23/toolism/pull/185)
 - [aakash1552005/rerunner #142: ci\(security\): enforce fail-closed mutmut 3.8.1 gate \(#116\)](https://github.com/aakash1552005/rerunner/pull/142)
 - [aakash1552005/rerunner #130: feat\(cli\): add summary-only cassette audits to doctor](https://github.com/aakash1552005/rerunner/pull/130)
 - [pic-standard/pic-standard #201: fix\(mcp\): distinguish post-allow tool failures from PIC blocks \(#185\)](https://github.com/pic-standard/pic-standard/pull/201)
 - [maths/moodle-qtype\_stack #1954: docs\(api\): clarify test-result interpretation for automated STACK authors](https://github.com/maths/moodle-qtype_stack/pull/1954)
-- [rakeshnitb23/toolism #164: docs: explain which tool fields are counted](https://github.com/rakeshnitb23/toolism/pull/164)
 
 **Merged community contributions**
 
