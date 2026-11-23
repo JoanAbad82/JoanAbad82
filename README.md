@@ -72,7 +72,7 @@ Tasks may already have an active contributor. Check the issue discussion before 
 
 ## Contribute or discuss
 
-- [WEB MATES: review mathematics, Catalan/Spanish drafts, and accessibility](https://github.com/JoanAbad82/web-mates/issues/1) — small, evidence-based reviews welcome; the educational site is not deployed.
+- [WEB MATES: review mathematics, Catalan/Spanish drafts, and accessibility](https://github.com/JoanAbad82/web-mates/issues/1) — small, evidence-based reviews welcome; the public beta requires human review.
 - [GitHub Hidden Gems Discussions](https://github.com/JoanAbad82/github-hidden-gems/discussions) — questions and ideas about discovery, evidence boundaries, reproducibility, and experiments.
 - [Open Research Intake challenges](https://github.com/JoanAbad82/github-hidden-gems-research-intake/issues?q=is%3Aissue+is%3Aopen+label%3Aagent-ready) — live agent-ready research issues; verify each task is available before starting.
 - Account-wide contribution, security, issue, and pull-request defaults live in [`JoanAbad82/.github`](https://github.com/JoanAbad82/.github).
