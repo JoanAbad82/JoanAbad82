@@ -30,6 +30,36 @@ class ReadTimeoutResponse:
 
 
 class GuardNetworkFailures(unittest.TestCase):
+    def test_transient_http_503_recovers(self):
+        url = "https://github.com/example/profile/blob/main/example.md"
+        unavailable = urllib.error.HTTPError(url, 503, "Unavailable", {}, None)
+        with patch.object(guard.urllib.request, "urlopen") as remote, patch.object(guard.time, "sleep") as sleep:
+            response = remote.return_value
+            response.__enter__.return_value.status = 200
+            response.__enter__.return_value.read.return_value = b"healthy"
+            remote.side_effect = [unavailable, unavailable, response]
+            self.assertEqual(guard.fetch_text(url), "healthy")
+            self.assertEqual(remote.call_count, 3)
+            self.assertEqual([call.args[0] for call in sleep.call_args_list], [1, 2])
+
+    def test_persistent_http_503_remains_fail_closed(self):
+        url = "https://github.com/example/profile/blob/main/example.md"
+        unavailable = urllib.error.HTTPError(url, 503, "Unavailable", {}, None)
+        with patch.object(guard.urllib.request, "urlopen", side_effect=unavailable) as remote, patch.object(guard.time, "sleep") as sleep:
+            with self.assertRaisesRegex(guard.DriftError, "HTTP 503"):
+                guard.fetch_text(url)
+            self.assertEqual(remote.call_count, 3)
+            self.assertEqual(sleep.call_count, 2)
+
+    def test_http_404_is_not_retried(self):
+        url = "https://github.com/example/profile/blob/main/missing.md"
+        missing = urllib.error.HTTPError(url, 404, "Not Found", {}, None)
+        with patch.object(guard.urllib.request, "urlopen", side_effect=missing) as remote, patch.object(guard.time, "sleep") as sleep:
+            with self.assertRaisesRegex(guard.DriftError, "HTTP 404"):
+                guard.fetch_text(url)
+            remote.assert_called_once()
+            sleep.assert_not_called()
+
     def test_timeout_at_connect_is_dr_error_with_context(self):
         url = "https://example.invalid/agent-surface.json"
         with patch.object(guard.urllib.request, "urlopen", side_effect=TimeoutError("synthetic connect timeout")):
