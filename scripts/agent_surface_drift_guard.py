@@ -8,6 +8,7 @@ import json
 import os
 import sys
 import tempfile
+import time
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
@@ -24,6 +25,21 @@ class DriftError(RuntimeError):
 
 
 def fetch_text(url: str, timeout: int = 20) -> str:
+    # A transient 503 is not evidence of drift. Retry, but never accept
+    # an unavailable endpoint as verified.
+    for attempt in range(3):
+        try:
+            return _fetch_text_once(url, timeout)
+        except DriftError as exc:
+            cause = exc.__cause__
+            if (not isinstance(cause, urllib.error.HTTPError)
+                    or cause.code != 503 or attempt == 2):
+                raise
+            time.sleep(2 ** attempt)
+    raise AssertionError("unreachable")
+
+
+def _fetch_text_once(url: str, timeout: int) -> str:
     request_url = url
     if "raw.githubusercontent.com" in url or "openutilitylab.com" in url:
         separator = "&" if "?" in url else "?"
