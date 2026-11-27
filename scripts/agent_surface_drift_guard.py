@@ -4,27 +4,163 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
+import re
+import subprocess
 import sys
 import tempfile
 import time
 import urllib.error
 import urllib.request
+from contextvars import ContextVar
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
 
 USER_AGENT = "JoanAbad82-AgentSurfaceDriftGuard/1.0"
 SITE_REPO_RAW = "https://raw.githubusercontent.com/JoanAbad82/openutilitylab-site/main"
 LIVE_BASE = "https://openutilitylab.com"
 
 
+MAX_RESPONSE_BYTES = 1024 * 1024
+REPOSITORY = re.compile(r"JoanAbad82/[A-Za-z0-9_.-]+", re.IGNORECASE)
+REVISION = re.compile(r"[0-9a-f]{40}")
+_RUN: ContextVar[dict[str, Any] | None] = ContextVar("guard_run", default=None)
+
+
 class DriftError(RuntimeError):
-    pass
+    def __init__(self, message: str, code: str = "UNAVAILABLE") -> None:
+        super().__init__(message)
+        self.code = code
+
+
+class DiagnosticErrors(list[str]):
+    """Keep legacy error strings alongside explicit machine-readable codes."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.diagnostics: list[dict[str, str]] = []
+
+    def add(self, message: str, code: str) -> None:
+        super().append(message)
+        self.diagnostics.append({"code": code, "message": message})
+
+    def append(self, message: str) -> None:
+        self.add(message, "DRIFT")
+
+
+def record_error(errors: list[str], exc: DriftError) -> None:
+    if isinstance(errors, DiagnosticErrors):
+        errors.add(str(exc), exc.code)
+    else:
+        errors.append(str(exc))
+
+
+def validate_destination(url: str) -> None:
+    try:
+        parts = urlsplit(url)
+        path = parts.path.split("/")[1:]
+        valid = (url.isascii() and not any(ord(ch) <= 32 or ord(ch) == 127 for ch in url)
+                 and parts.scheme == "https" and parts.netloc == parts.hostname
+                 and not parts.fragment and not parts.query
+                 and all(re.fullmatch(r"[A-Za-z0-9_.-]+", x)
+                         and x not in {".", ".."} for x in path))
+        if valid and parts.hostname == "raw.githubusercontent.com":
+            valid = (len(path) >= 4 and REPOSITORY.fullmatch("/".join(path[:2]))
+                     and (path[2] == "main" or REVISION.fullmatch(path[2])))
+        elif valid and parts.hostname == "github.com":
+            valid = (len(path) >= 5 and REPOSITORY.fullmatch("/".join(path[:2]))
+                     and path[2:4] == ["blob", "main"])
+        elif valid and parts.hostname == "api.github.com":
+            valid = (len(path) == 7 and path[0] == "repos"
+                     and REPOSITORY.fullmatch("/".join(path[1:3]))
+                     and path[3:] == ["git", "ref", "heads", "main"])
+        elif valid and parts.hostname == "openutilitylab.com":
+            valid = parts.path in {"/agents.json", "/tasks.json", "/llms.txt",
+                                   "/PROJECT_STATUS.json"}
+        else:
+            valid = False
+    except (ValueError, TypeError):
+        valid = False
+    if not valid:
+        raise DriftError(f"Disallowed destination: {url}", "NETWORK_POLICY")
+
+
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise DriftError(f"Redirect refused for {req.full_url}", "NETWORK_POLICY")
+
+
+def _open_url(req, timeout):
+    return urllib.request.build_opener(NoRedirect()).open(req, timeout=timeout)
+
+
+def _record_source(source: str, data: bytes, **metadata: Any) -> None:
+    run = _RUN.get()
+    if run is not None:
+        run["sources"].append({"source": source, "sha256": hashlib.sha256(data).hexdigest(),
+                               "bytes": len(data), **metadata})
+
+
+def _pin_raw_url(url: str) -> str:
+    run = _RUN.get()
+    parts = urlsplit(url)
+    path = parts.path.split("/")
+    if (run is None or parts.hostname != "raw.githubusercontent.com"
+            or len(path) < 5 or path[3] != "main"):
+        return url
+    repo = "/".join(path[1:3])
+    revisions = run["remote_revisions"]
+    if repo not in revisions:
+        ref = fetch_json(f"https://api.github.com/repos/{repo}/git/ref/heads/main")
+        obj = ref.get("object")
+        sha = obj.get("sha") if isinstance(obj, dict) else None
+        if (ref.get("ref") != "refs/heads/main" or not isinstance(obj, dict)
+                or obj.get("type") != "commit" or not isinstance(sha, str)
+                or not REVISION.fullmatch(sha)):
+            raise DriftError(f"Invalid main ref for {repo}", "INVALID_DATA")
+        revisions[repo] = sha
+    path[3] = revisions[repo]
+    return f"https://raw.githubusercontent.com{'/'.join(path)}"
+
+
+def _validator(schema: dict[str, Any]) -> Any:
+    try:
+        from jsonschema import Draft202012Validator, FormatChecker
+        from jsonschema.exceptions import SchemaError
+        from referencing import Registry
+    except ImportError as exc:
+        raise DriftError("Required JSON Schema validator is unavailable", "DEPENDENCY_ERROR") from exc
+    # No remote schema retrieval; references must resolve within the local schema.
+    if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
+        raise DriftError("Unsupported local JSON Schema dialect", "INVALID_SCHEMA")
+    try:
+        Draft202012Validator.check_schema(schema)
+    except SchemaError as exc:
+        raise DriftError(f"Invalid local JSON Schema: {exc.message}", "INVALID_SCHEMA") from exc
+    formats = FormatChecker()
+    if not {"uri", "date-time"} <= formats.checkers.keys():
+        raise DriftError("Required URI/date-time format validators are unavailable",
+                         "DEPENDENCY_ERROR")
+    return Draft202012Validator(schema, format_checker=formats, registry=Registry())
+
+
+def validate_schema(instance: dict[str, Any], validator: Any,
+                    errors: list[str], source: str) -> None:
+    for issue in sorted(validator.iter_errors(instance), key=lambda e: (str(e.json_path), e.message)):
+        message = f"{source}: schema {issue.json_path}: {issue.message}"
+        if isinstance(errors, DiagnosticErrors):
+            errors.add(message, "SCHEMA_VIOLATION")
+        else:
+            errors.append(message)
 
 
 def fetch_text(url: str, timeout: int = 20) -> str:
+    validate_destination(url)
+    url = _pin_raw_url(url)
     # A transient 503 is not evidence of drift. Retry, but never accept
     # an unavailable endpoint as verified.
     for attempt in range(3):
@@ -41,7 +177,7 @@ def fetch_text(url: str, timeout: int = 20) -> str:
 
 def _fetch_text_once(url: str, timeout: int) -> str:
     request_url = url
-    if "raw.githubusercontent.com" in url or "openutilitylab.com" in url:
+    if urlsplit(url).hostname in {"raw.githubusercontent.com", "openutilitylab.com"}:
         separator = "&" if "?" in url else "?"
         request_url = f"{url}{separator}drift_guard={int(datetime.now(timezone.utc).timestamp())}"
     req = urllib.request.Request(
@@ -54,12 +190,21 @@ def _fetch_text_once(url: str, timeout: int) -> str:
         },
     )
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with _open_url(req, timeout=timeout) as resp:
             if getattr(resp, "status", 200) != 200:
                 raise DriftError(f"HTTP {getattr(resp, 'status', 'unknown')} for {url}")
-            return resp.read().decode("utf-8-sig")
+            data = resp.read(MAX_RESPONSE_BYTES + 1)
+            if len(data) > MAX_RESPONSE_BYTES:
+                raise DriftError(f"Response too large for {url}", "NETWORK_POLICY")
+            _record_source(url, data, etag=resp.headers.get("ETag"),
+                           last_modified=resp.headers.get("Last-Modified"))
+            try:
+                return data.decode("utf-8-sig")
+            except UnicodeDecodeError as exc:
+                raise DriftError(f"Invalid UTF-8 at {url}", "INVALID_DATA") from exc
     except urllib.error.HTTPError as exc:
-        raise DriftError(f"HTTP {exc.code} for {url}") from exc
+        raise DriftError(f"HTTP {exc.code} for {url}",
+                         "NOT_FOUND" if exc.code == 404 else "UNAVAILABLE") from exc
     except urllib.error.URLError as exc:
         if isinstance(exc.reason, TimeoutError):
             raise DriftError(f"Timeout for {url}: {exc.reason}") from exc
@@ -74,21 +219,23 @@ def fetch_json(url: str) -> dict[str, Any]:
     try:
         data = json.loads(fetch_text(url))
     except json.JSONDecodeError as exc:
-        raise DriftError(f"Invalid JSON at {url}: {exc}") from exc
+        raise DriftError(f"Invalid JSON at {url}: {exc}", "INVALID_DATA") from exc
     if not isinstance(data, dict):
-        raise DriftError(f"Expected JSON object at {url}")
+        raise DriftError(f"Expected JSON object at {url}", "INVALID_DATA")
     return data
 
 
 def load_json(path: Path) -> dict[str, Any]:
     try:
-        data = json.loads(path.read_text(encoding="utf-8-sig"))
+        raw = path.read_bytes()
+        _record_source(path.name, raw)
+        data = json.loads(raw.decode("utf-8-sig"))
     except FileNotFoundError as exc:
-        raise DriftError(f"Missing local file: {path}") from exc
-    except json.JSONDecodeError as exc:
-        raise DriftError(f"Invalid local JSON {path}: {exc}") from exc
+        raise DriftError(f"Missing local file: {path}", "LOCAL_INPUT") from exc
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        raise DriftError(f"Invalid local JSON {path}: {exc}", "INVALID_DATA") from exc
     if not isinstance(data, dict):
-        raise DriftError(f"Expected JSON object in {path}")
+        raise DriftError(f"Expected JSON object in {path}", "INVALID_DATA")
     return data
 
 
@@ -147,6 +294,8 @@ def _run_checks(
     projects = load_json(root / "projects.json")
     schema = load_json(root / "schemas" / "agent-task-contract.schema.json")
     task_index_schema = load_json(root / "schemas" / "agent-task-index.schema.json")
+    contract_validator = _validator(schema)
+    index_validator = _validator(task_index_schema)
     schema_url = projects.get("agent_contract_schema")
     interaction_meta = projects.get("agent_interaction", {})
     task_index_url = interaction_meta.get("task_index_url")
@@ -207,6 +356,9 @@ def _run_checks(
         "live llms.txt",
     ])
 
+    validate_schema(repo_tasks, index_validator, errors, "repo tasks.json")
+    validate_schema(live_tasks, index_validator, errors, "live tasks.json")
+
     require(repo_agents == live_agents,
             "deployment drift: live /agents.json differs from openutilitylab-site main", errors)
     require(repo_tasks == live_tasks,
@@ -239,7 +391,7 @@ def _run_checks(
                 fetch_text(f"https://raw.githubusercontent.com/{repo}/main/{path}")
                 checks.append(f"custom_agent {repo}:{path}")
             except DriftError as exc:
-                errors.append(str(exc))
+                record_error(errors, exc)
 
     router_custom_agents = repo_agents.get("custom_agents")
     require(isinstance(router_custom_agents, list) and len(router_custom_agents) > 0,
@@ -346,10 +498,16 @@ def _run_checks(
                 f"tasks.json: task {task_id} missing agent-ready label", errors)
         require(isinstance(repo, str) and repo in project_map,
                 f"tasks.json: task {task_id} references unknown repository {repo!r}", errors)
+        if isinstance(repo, str) and type(task.get("issue_number")) is int:
+            number = task["issue_number"]
+            require(task_id == f"{repo}#{number}",
+                    f"tasks.json: task {task_id} issue identity drift", errors)
+            require(task.get("url") == f"https://github.com/{repo}/issues/{number}",
+                    f"tasks.json: task {task_id} issue URL drift", errors)
         expected_contract = project_map.get(repo, {}).get("interaction", {}).get("task_contract_ref")
         require(task.get("task_contract") == expected_contract,
                 f"tasks.json: task {task_id} task_contract drift", errors)
-        require(task.get("human_review_required") == ("human-review-required" in labels),
+        require(task.get("human_review_required") is ("human-review-required" in labels),
                 f"tasks.json: task {task_id} human_review_required drift", errors)
         expected_review_agent = surface_review_agent_by_repo.get(str(repo))
         if expected_review_agent is not None:
@@ -384,7 +542,7 @@ def _run_checks(
                 fetch_text(status_url)
                 checks.append(f"status_url {full}")
             except DriftError as exc:
-                errors.append(str(exc))
+                record_error(errors, exc)
 
     task_surfaces = repo_agents.get("task_surfaces", [])
     require(isinstance(task_surfaces, list) and len(task_surfaces) > 0,
@@ -420,6 +578,7 @@ def _run_checks(
             try:
                 task = fetch_json(task_index)
                 fetched_task_indexes[repo] = task
+                validate_schema(task, contract_validator, errors, task_index)
                 validate_task_contract(task, repo, str(schema_url), errors, task_index)
                 checks.append(f"task_index {repo}")
                 project_caps = set(project_map.get(repo, {}).get("capabilities", []))
@@ -438,7 +597,7 @@ def _run_checks(
                 require(live_query == project_query == surface_query,
                         f"{repo}: live agent-ready query drift", errors)
             except DriftError as exc:
-                errors.append(str(exc))
+                record_error(errors, exc)
 
         if isinstance(status_url, str) and status_url:
             try:
@@ -449,7 +608,20 @@ def _run_checks(
                         f"{repo}: PROJECT_STATUS task_contract drift", errors)
                 checks.append(f"project_status {repo}")
             except DriftError as exc:
-                errors.append(str(exc))
+                record_error(errors, exc)
+
+    for row in task_rows:
+        if not isinstance(row, dict):
+            continue
+        repo = row.get("repository")
+        surface = next((x for x in task_surfaces if isinstance(x, dict)
+                        and x.get("repository") == repo), None)
+        actual = row.get("surface_capabilities")
+        expected = surface.get("capabilities") if surface else None
+        require(isinstance(actual, list) and isinstance(expected, list)
+                and all(isinstance(x, str) for x in actual + expected)
+                and set(actual) == set(expected),
+                f"tasks.json: task {row.get('task_id')} surface_capabilities drift", errors)
 
     cap_index = repo_agents.get("capability_index")
     require(isinstance(cap_index, dict), "agents.json: capability_index missing", errors)
@@ -471,15 +643,16 @@ def _run_checks(
         task_ref = project.get("interaction", {}).get("task_contract_ref")
         if isinstance(task_ref, str) and task_ref:
             if task_ref in surface_task_urls.values():
+                require(surface_task_urls.get(repo) == task_ref,
+                        f"{repo}: task_contract_ref points at another task surface", errors)
                 continue
             try:
                 task = fetch_json(task_ref)
-                expected_repo = task.get("repository")
-                if isinstance(expected_repo, str):
-                    validate_task_contract(task, expected_repo, str(schema_url), errors, task_ref)
-                    checks.append(f"project task_contract_ref {repo}")
+                validate_schema(task, contract_validator, errors, task_ref)
+                validate_task_contract(task, repo, str(schema_url), errors, task_ref)
+                checks.append(f"project task_contract_ref {repo}")
             except DriftError as exc:
-                errors.append(str(exc))
+                record_error(errors, exc)
 
     expected_links = {
         "interaction_protocol": "https://github.com/JoanAbad82/JoanAbad82/blob/main/AGENT_INTERACTION.md",
@@ -494,7 +667,7 @@ def _run_checks(
             fetch_text(expected)
             checks.append(f"canonical link {field}")
         except DriftError as exc:
-            errors.append(str(exc))
+            record_error(errors, exc)
 
     for needle in [
         f"{LIVE_BASE}/agents.json",
@@ -529,17 +702,27 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--profile-root", default=".", help="Local checkout of JoanAbad82 profile repo")
     parser.add_argument("--json-report", default="", help="Optional report path")
+    parser.add_argument("--evidence-report", default="", help="Optional separate report with diagnostics and source evidence")
     args = parser.parse_args()
+    if (args.json_report and args.evidence_report
+            and Path(args.json_report).resolve() == Path(args.evidence_report).resolve()):
+        parser.error("Legacy and evidence report paths must differ")
 
     root = Path(args.profile_root).resolve()
-    errors: list[str] = []
+    errors = DiagnosticErrors()
     warnings: list[str] = []
     checks: list[str] = []
+    run: dict[str, Any] = {"sources": [], "remote_revisions": {}}
+    token = _RUN.set(run)
     try:
         _run_checks(root, errors, warnings, checks)
+    except DriftError as exc:
+        record_error(errors, exc)
     except Exception as exc:
         # Never emit PASS or lose the report after an unexpected validation error.
-        errors.append(f"Validation interrupted ({type(exc).__name__}): {exc}")
+        errors.add(f"Validation interrupted ({type(exc).__name__}): {exc}", "INTERNAL_ERROR")
+    finally:
+        _RUN.reset(token)
 
     report = {
         "schema_version": "1.0",
@@ -553,6 +736,24 @@ def main() -> int:
 
     if args.json_report:
         _write_report_atomically(Path(args.json_report), report)
+
+    if args.evidence_report:
+        head = None
+        dirty = None
+        try:
+            head = subprocess.check_output(
+                ["git", "-C", str(root), "rev-parse", "HEAD"],
+                text=True, stderr=subprocess.DEVNULL, timeout=5).strip()
+            dirty = bool(subprocess.check_output(
+                ["git", "-C", str(root), "status", "--porcelain", "--untracked-files=no"],
+                text=True, stderr=subprocess.DEVNULL, timeout=5).strip())
+        except (OSError, subprocess.SubprocessError):
+            pass
+        details = {"version": "1.1", "profile_git_head": head,
+                   "profile_tracked_worktree_dirty": dirty,
+                   "guard_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                   "diagnostics": errors.diagnostics, **run}
+        _write_report_atomically(Path(args.evidence_report), {**report, "details": details})
 
     print(f"DRIFT_GUARD={report['status']}")
     print(f"CHECKS_COMPLETED={len(checks)}")

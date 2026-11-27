@@ -44,7 +44,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install pinned JSON Schema validator
-        run: python -m pip install --disable-pip-version-check "jsonschema==4.25.1"
+        run: python -m pip install --disable-pip-version-check "jsonschema==4.25.1" "rfc3339-validator==0.1.4" "rfc3986-validator==0.1.1"
 
       - name: Validate with offline security and schema tests
         run: python -m unittest discover -s tests -p "test_*.py" -v
@@ -69,7 +69,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install pinned JSON Schema validator
-        run: python -m pip install --disable-pip-version-check "jsonschema==4.25.1"
+        run: python -m pip install --disable-pip-version-check "jsonschema==4.25.1" "rfc3339-validator==0.1.4" "rfc3986-validator==0.1.1"
 
       - name: Validate with offline security and schema tests
         run: python -m unittest discover -s tests -p "test_*.py" -v

@@ -25,15 +25,15 @@ class ReadTimeoutResponse:
     def __exit__(self, *_args):
         return None
 
-    def read(self):
+    def read(self, _limit):
         raise TimeoutError("synthetic read timed out")
 
 
 class GuardNetworkFailures(unittest.TestCase):
     def test_transient_http_503_recovers(self):
-        url = "https://github.com/example/profile/blob/main/example.md"
+        url = "https://github.com/JoanAbad82/JoanAbad82/blob/main/example.md"
         unavailable = urllib.error.HTTPError(url, 503, "Unavailable", {}, None)
-        with patch.object(guard.urllib.request, "urlopen") as remote, patch.object(guard.time, "sleep") as sleep:
+        with patch.object(guard, "_open_url") as remote, patch.object(guard.time, "sleep") as sleep:
             response = remote.return_value
             response.__enter__.return_value.status = 200
             response.__enter__.return_value.read.return_value = b"healthy"
@@ -43,48 +43,48 @@ class GuardNetworkFailures(unittest.TestCase):
             self.assertEqual([call.args[0] for call in sleep.call_args_list], [1, 2])
 
     def test_persistent_http_503_remains_fail_closed(self):
-        url = "https://github.com/example/profile/blob/main/example.md"
+        url = "https://github.com/JoanAbad82/JoanAbad82/blob/main/example.md"
         unavailable = urllib.error.HTTPError(url, 503, "Unavailable", {}, None)
-        with patch.object(guard.urllib.request, "urlopen", side_effect=unavailable) as remote, patch.object(guard.time, "sleep") as sleep:
+        with patch.object(guard, "_open_url", side_effect=unavailable) as remote, patch.object(guard.time, "sleep") as sleep:
             with self.assertRaisesRegex(guard.DriftError, "HTTP 503"):
                 guard.fetch_text(url)
             self.assertEqual(remote.call_count, 3)
             self.assertEqual(sleep.call_count, 2)
 
     def test_http_404_is_not_retried(self):
-        url = "https://github.com/example/profile/blob/main/missing.md"
+        url = "https://github.com/JoanAbad82/JoanAbad82/blob/main/missing.md"
         missing = urllib.error.HTTPError(url, 404, "Not Found", {}, None)
-        with patch.object(guard.urllib.request, "urlopen", side_effect=missing) as remote, patch.object(guard.time, "sleep") as sleep:
+        with patch.object(guard, "_open_url", side_effect=missing) as remote, patch.object(guard.time, "sleep") as sleep:
             with self.assertRaisesRegex(guard.DriftError, "HTTP 404"):
                 guard.fetch_text(url)
             remote.assert_called_once()
             sleep.assert_not_called()
 
     def test_timeout_at_connect_is_dr_error_with_context(self):
-        url = "https://example.invalid/agent-surface.json"
-        with patch.object(guard.urllib.request, "urlopen", side_effect=TimeoutError("synthetic connect timeout")):
+        url = "https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/agent-surface.json"
+        with patch.object(guard, "_open_url", side_effect=TimeoutError("synthetic connect timeout")):
             with self.assertRaises(guard.DriftError) as raised:
                 guard.fetch_text(url, timeout=2)
         self.assertIn("timeout", str(raised.exception).lower())
         self.assertIn(url, str(raised.exception))
 
     def test_timeout_during_read_is_dr_error(self):
-        url = "https://example.invalid/canonical.md"
-        with patch.object(guard.urllib.request, "urlopen", return_value=ReadTimeoutResponse()):
+        url = "https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/canonical.md"
+        with patch.object(guard, "_open_url", return_value=ReadTimeoutResponse()):
             with self.assertRaises(guard.DriftError) as raised:
                 guard.fetch_text(url, timeout=2)
         self.assertIn("timeout", str(raised.exception).lower())
         self.assertIn(url, str(raised.exception))
 
     def test_connection_reset_is_dr_error(self):
-        with patch.object(guard.urllib.request, "urlopen", side_effect=ConnectionResetError("synthetic reset")):
+        with patch.object(guard, "_open_url", side_effect=ConnectionResetError("synthetic reset")):
             with self.assertRaises(guard.DriftError):
-                guard.fetch_text("https://example.invalid/disconnected.json", timeout=2)
+                guard.fetch_text("https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/disconnected.json", timeout=2)
 
     def test_urlerror_wrapping_timeout_is_explicit(self):
-        url = "https://example.invalid/wrapped-timeout"
+        url = "https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/wrapped-timeout"
         with patch.object(
-            guard.urllib.request, "urlopen",
+            guard, "_open_url",
             side_effect=urllib.error.URLError(TimeoutError("synthetic nested timeout")),
         ):
             with self.assertRaises(guard.DriftError) as raised:
@@ -94,11 +94,11 @@ class GuardNetworkFailures(unittest.TestCase):
 
     def test_existing_urlerror_remains_fail_closed(self):
         with patch.object(
-            guard.urllib.request, "urlopen",
+            guard, "_open_url",
             side_effect=urllib.error.URLError("synthetic network error")
         ):
             with self.assertRaisesRegex(guard.DriftError, "URL error"):
-                guard.fetch_text("https://example.invalid/network", timeout=2)
+                guard.fetch_text("https://raw.githubusercontent.com/JoanAbad82/JoanAbad82/main/network", timeout=2)
 
 
 class GuardReportFailures(unittest.TestCase):
