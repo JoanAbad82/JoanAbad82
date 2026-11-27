@@ -18,11 +18,11 @@ It does not represent visitor counts, paid promotion, or an endorsement of unrev
 
 **Accepted upstream contributions**
 
+- [aakash1552005/rerunner #145: feat\(cli\): support deterministic cassette pseudonymization \(#98\)](https://github.com/aakash1552005/rerunner/pull/145)
+- [evapatel123/GitScope #3: fix: respect GitHub API limits and preserve evidence integrity \(#2\)](https://github.com/evapatel123/GitScope/pull/3)
 - [Git-FED/MuseAi-Skills-Guide #40: Validate ledger evidence and unavailable byte values](https://github.com/Git-FED/MuseAi-Skills-Guide/pull/40)
 - [rakeshnitb23/toolism #185: test\(rules\): cover generated schema invariants \(#147\)](https://github.com/rakeshnitb23/toolism/pull/185)
 - [aakash1552005/rerunner #142: ci\(security\): enforce fail-closed mutmut 3.8.1 gate \(#116\)](https://github.com/aakash1552005/rerunner/pull/142)
-- [aakash1552005/rerunner #130: feat\(cli\): add summary-only cassette audits to doctor](https://github.com/aakash1552005/rerunner/pull/130)
-- [pic-standard/pic-standard #201: fix\(mcp\): distinguish post-allow tool failures from PIC blocks \(#185\)](https://github.com/pic-standard/pic-standard/pull/201)
 
 **Merged community contributions**
 
