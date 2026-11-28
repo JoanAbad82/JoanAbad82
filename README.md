@@ -18,11 +18,11 @@ It does not represent visitor counts, paid promotion, or an endorsement of unrev
 
 **Accepted upstream contributions**
 
+- [evapatel123/GitScope #7: fix: distinguish unavailable README evidence from absence](https://github.com/evapatel123/GitScope/pull/7)
 - [aakash1552005/rerunner #145: feat\(cli\): support deterministic cassette pseudonymization \(#98\)](https://github.com/aakash1552005/rerunner/pull/145)
 - [evapatel123/GitScope #3: fix: respect GitHub API limits and preserve evidence integrity \(#2\)](https://github.com/evapatel123/GitScope/pull/3)
 - [Git-FED/MuseAi-Skills-Guide #40: Validate ledger evidence and unavailable byte values](https://github.com/Git-FED/MuseAi-Skills-Guide/pull/40)
 - [rakeshnitb23/toolism #185: test\(rules\): cover generated schema invariants \(#147\)](https://github.com/rakeshnitb23/toolism/pull/185)
-- [aakash1552005/rerunner #142: ci\(security\): enforce fail-closed mutmut 3.8.1 gate \(#116\)](https://github.com/aakash1552005/rerunner/pull/142)
 
 **Merged community contributions**
 
